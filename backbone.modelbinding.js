@@ -386,21 +386,21 @@ var modelbinding = (function(Backbone, _, $) {
   // ----------------------------
   // Data-Bind Binding Methods
   // ----------------------------
-  var DataBindBinding = (function(Backbone, _, $){
+  var DataBindBinding = (function(Backbone, _, $) {
     var dataBindSubstConfig = {
       "default": ""
     };
 
-    modelBinding.Configuration.dataBindSubst = function(config){
+    modelBinding.Configuration.dataBindSubst = function(config) {
       this.storeDataBindSubstConfig();
       _.extend(dataBindSubstConfig, config);
     };
 
-    modelBinding.Configuration.storeDataBindSubstConfig = function(){
+    modelBinding.Configuration.storeDataBindSubstConfig = function() {
       modelBinding.Configuration._dataBindSubstConfig = _.clone(dataBindSubstConfig);
     };
 
-    modelBinding.Configuration.restoreDataBindSubstConfig = function(){
+    modelBinding.Configuration.restoreDataBindSubstConfig = function() {
       if (modelBinding.Configuration._dataBindSubstConfig){
         dataBindSubstConfig = modelBinding.Configuration._dataBindSubstConfig;
         delete modelBinding.Configuration._dataBindSubstConfig;
@@ -409,8 +409,8 @@ var modelbinding = (function(Backbone, _, $) {
 
     modelBinding.Configuration.getDataBindSubst = function(elementType, value){
       var returnValue = value;
-      if (value === undefined){
-        if (dataBindSubstConfig.hasOwnProperty(elementType)){
+      if (typeof(value) === "undefined") {
+        if (dataBindSubstConfig.hasOwnProperty(elementType)) {
           returnValue = dataBindSubstConfig[elementType];
         } else {
           returnValue = dataBindSubstConfig["default"];
@@ -439,7 +439,9 @@ var modelbinding = (function(Backbone, _, $) {
           element[val? "hide" : "show"]();
           break;
         default:
-          element.attr(attr, val);
+		  if (element[0].type != "checkbox" && element[0].type != "radio") {
+            element.attr(attr, val);
+          }
       }
     };
 
