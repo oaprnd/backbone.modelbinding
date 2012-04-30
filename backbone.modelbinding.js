@@ -111,6 +111,7 @@ var modelbinding = (function(Backbone, _, $) {
 
   modelBinding.Configuration.bindindAttrConfig = {
     text: "id",
+    hidden: "id",
     textarea: "id",
     password: "id",
     radio: "name",
@@ -143,6 +144,7 @@ var modelbinding = (function(Backbone, _, $) {
   modelBinding.Configuration.configureAllBindingAttributes = function(attribute){
     var config = modelBinding.Configuration.bindindAttrConfig;
     config.text = attribute;
+    config.hidden = attribute;
     config.textarea = attribute;
     config.password = attribute;
     config.radio = attribute;
@@ -511,6 +513,7 @@ var modelbinding = (function(Backbone, _, $) {
   // ----------------------------
   modelBinding.Conventions = {
     text: {selector: "input:text", handler: StandardBinding},
+    hidden: {selector:"input[type='hidden']", handler: StandardBinding},
     textarea: {selector: "textarea", handler: StandardBinding},
     password: {selector: "input:password", handler: StandardBinding},
     radio: {selector: "input:radio", handler: RadioGroupBinding},
