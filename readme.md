@@ -1,4 +1,25 @@
-# About Backbone.ModelBinding
+# Backbone.ModelBinding Project Status: Abandoned
+
+I'm officially abandoning this project. After many months of 
+purposely ignoring the growing issues list, due to lack of time 
+and lack of me using this library anymore, I'm no longer going 
+to support it.
+
+If anyone in the community wishes to pick it up and take over,
+feel free - and good luck. The code base is a mess. It's bloated,
+it's slow, it's horrendously difficult to change, and the issues
+that have mounted up are nearly impossible to fix without adding
+to the giant mess. The only reasonable options for fixing this
+mess, in my opinion, are to take the basic ideas and write
+something far less clunky and cumbersome, from scratch.
+
+On this lines, there are other options available. For example,
+[Backbone.ModelBinder](https://github.com/theironcook/Backbone.ModelBinder).
+
+I recommend looking at that project, or any of the others that
+are actively maintained.
+
+## About Backbone.ModelBinding
 
 Convention-based, awesome model binding for [Backbone.js](http://documentcloud.github.com/backbone),
 inspired by [Brad Phelan](http://xtargets.com/2011/06/11/binding-model-attributes-to-form-elements-with-backbone-js/),
@@ -6,7 +27,8 @@ inspired by [Brad Phelan](http://xtargets.com/2011/06/11/binding-model-attribute
 and [Brandon Satrom](http://userinexperience.com/?p=633)'s work with Knockout.
 
 This plugin provides a simple, convention based mechanism to create bi-directional
-binding between your HTML form input elements and your Backbone models. 
+binding between your Backbone models and your HTML elements, including form inputs, 
+divs, spans, and so on. 
 
 Instead of writing the same boiler plate code to read from your form inputs and
 populate the model attributes, for every input on your form, you can make a 
@@ -32,16 +54,12 @@ plugin.
 
 ### Prerequisites
 
-* Backbone.js v0.5.1 or higher
-* jQuery v1.6.2 or higher
+* Backbone.js v0.9.0
+* Underscore.js v1.3.1
+* jQuery v1.7.1
 
-This is a plugin for Backbone.js and is built and tested against Backbone v0.5.1. It also uses jQuery
-to perform most of the binding and manipulations, and is built and tested against v1.6.1. However, I am
-currently using this plugin in a production application with Backbone v0.3.3 and jQuery v1.5.1. 
-
-At this point, I make no guarantees of it working with any version of Backbone or jQuery, 
-other than what it has been built and tested against. It works for me, so it may work for you
-with versions other than what is stated
+This is a plugin for Backbone.js and is built and tested against these versions of these
+libraries. At this point, I make no guarantees of it working with any version of Backbone or jQuery.
 
 ### Get The ModelBinding Plugin
 
@@ -676,6 +694,16 @@ When above example would be:
 ````
 
 ## Release Notes
+
+### v0.5.0
+
+* **BREAKING:** Backbone v0.5.3 is no longer officially supported. 
+  * It should work fine right now (Backbone v0.9.0 is mostly backward compatible), but I won't be testing against v0.5.x anymore. 
+  * If you need support for v0.5.3, use ModelBinding v0.4.3
+* Fixed radio field group, name binding (#60)
+* Updated Backbone to v0.9.0
+* Updated Underscore to v1.3.1
+* Updated jQuery to v1.7.1
 
 ### v0.4.3
 
