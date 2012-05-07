@@ -25,6 +25,10 @@ of a `<div>`, or changing the css class of an `<img>` tag, the `data-bind`
 support provides a very powerful and flexible means of creating a very rich
 user experience.
 
+The [upstream project](https://github.com/derickbailey/backbone.modelbinding) by
+[Derick Bailey](https://github.com/derickbailey) was abandoned on 4/22/12. This 
+project is a continuation of his earlier work.
+
 ## Getting Started
 
 It's easy to get up and running. You only need to have Backbone (including underscore.js - 

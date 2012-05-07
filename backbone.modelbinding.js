@@ -121,6 +121,7 @@
 
 		modelBinding.Configuration.bindindAttrConfig = {
 			text: "id",
+			hidden: "id",
 			textarea: "id",
 			password: "id",
 			radio: "name",
@@ -153,6 +154,7 @@
 		modelBinding.Configuration.configureAllBindingAttributes = function (attribute) {
 			var config = modelBinding.Configuration.bindindAttrConfig;
 			config.text = attribute;
+			config.hidden = attribute;
 			config.textarea = attribute;
 			config.password = attribute;
 			config.radio = attribute;
@@ -547,19 +549,23 @@
 		// Binding Conventions
 		// ----------------------------
 		modelBinding.Conventions = {
-			text: {
+			text : {
 				selector: "input:text",
 				handler: StandardBinding
 			},
-			textarea: {
+			hidden : {
+				selector : "input[type='hidden']", 
+				handler : StandardBinding
+			},
+			textarea : {
 				selector: "textarea",
 				handler: StandardBinding
 			},
-			password: {
+			password : {
 				selector: "input:password",
 				handler: StandardBinding
 			},
-			radio: {
+			radio : {
 				selector: "input:radio",
 				handler: RadioGroupBinding
 			},
