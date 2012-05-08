@@ -1,17 +1,41 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.sarxos</groupId>
 	<artifactId>backbone-modelbinding</artifactId>
 	<version>0.5.1</version>
-	<packaging>jar</packaging>
-	<!--
 	<packaging>war</packaging>
-	-->
 
 	<name>Backbone Modelbinding Plugin</name>
 	<url>https://github.com/oaprnd/backbone.modelbinding</url>
+
+	<organization>
+		<name>OAP RnD</name>
+		<url>http://www.github.com/oaprnd</url>
+	</organization>
+
+	<scm>
+		<connection>scm:git:git@github.com:oaprnd/backbone.modelbinding.git</connection>
+	</scm>
+
+	<repositories>
+		<repository>
+			<id>sarxos-repo</id>
+			<url>http://www.sarxos.pl/repo/maven2</url>
+		</repository>
+		<repository>
+			<id>maven-central</id>
+			<url>http://repo1.maven.org/maven2</url>
+		</repository>
+	</repositories>
+
+	<distributionManagement>
+		<repository>
+			<id>sarxos-ftp-repo</id>
+			<url>ftp://ftp.sarxos.pl/maven2</url>
+		</repository>
+	</distributionManagement>
 
 	<build>
 		<plugins>
@@ -21,24 +45,59 @@
 				<version>1.1.0</version>
 				<executions>
 					<execution>
+						<id>jasmine</id>
 						<goals>
+							<goal>generateManualRunner</goal>
+							<goal>resources</goal>
+							<goal>testResources</goal>
 							<goal>test</goal>
+							<goal>preparePackage</goal>
+							<goal>bdd</goal>
+						</goals>
+						<configuration>
+							<preloadSources>
+								<source>http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js</source>
+								<source>https://raw.github.com/documentcloud/underscore/master/underscore.js</source>
+								<source>https://raw.github.com/documentcloud/backbone/master/backbone.js</source>
+								<source>https://raw.github.com/jeffwatkins/jasmine-dom/master/lib/jasmine-dom-fixtures.js</source>
+								<source>https://raw.github.com/jeffwatkins/jasmine-dom/master/lib/jasmine-dom-matchers.js</source>
+								<source>src/test/javascript/app/sample.backbone.app.js</source>
+								<!--
+								<source>src/test/javascript/lib/jquery.js</source>
+								<source>src/test/javascript/lib/underscore.js</source>
+								<source>src/test/javascript/lib/backbone.js</source>
+								<source>src/test/javascript/app/sample.backbone.app.js</source>
+								<source>src/test/javascript/lib/jasmine-dom-fixtures.js</source>
+								<source>src/test/javascript/lib/jasmine-dom-matchers.js</source>							
+								-->
+							</preloadSources>
+							<jsTestSrcDir>src/test/javascript/specs</jsTestSrcDir>
+							<browserVersion>FIREFOX_3_6</browserVersion>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>net.alchim31.maven</groupId>
+				<artifactId>yuicompressor-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compress</goal>
 						</goals>
 					</execution>
 				</executions>
 				<configuration>
+					<sourceDirectory>src/main/javascript</sourceDirectory>
+					<suffix>.min</suffix>
+					<jswarn>false</jswarn>
+					<force>true</force>
+					<includes>
+						<include>*.js</include>
+					</includes>
+					<failOnWarning>false</failOnWarning>
 				</configuration>
 			</plugin>
-			<!--
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.1</version>
-				<configuration>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
-				</configuration>
-			</plugin>
-			-->
 		</plugins>
 	</build>
 </project>
