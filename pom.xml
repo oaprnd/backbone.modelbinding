@@ -37,45 +37,8 @@
 		</repository>
 	</distributionManagement>
 
-	<profiles>
-		<profile>
-			<id>bdd</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.github.searls</groupId>
-						<artifactId>jasmine-maven-plugin</artifactId>
-						<version>1.1.0</version>
-						<executions>
-							<execution>
-								<id>jasmine-bdd</id>
-								<phase>generate-sources</phase>
-								<goals>
-									<goal>bdd</goal>
-								</goals>
-								<configuration>
-									<preloadSources>
-										<source>src/test/javascript/lib/jquery.js</source>
-										<source>src/test/javascript/lib/underscore.js</source>
-										<source>src/test/javascript/lib/backbone.js</source>
-										<source>src/test/javascript/app/sample.backbone.app.js</source>
-										<source>src/test/javascript/lib/jasmine-dom-fixtures.js</source>
-										<source>src/test/javascript/lib/jasmine-dom-matchers.js</source>							
-									</preloadSources>
-									<jsTestSrcDir>src/test/javascript/specs</jsTestSrcDir>
-									<browserVersion>FIREFOX_3_6</browserVersion>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
-
 	<build>
 		<plugins>
-		
 			<plugin>
 				<groupId>com.github.searls</groupId>
 				<artifactId>jasmine-maven-plugin</artifactId>
@@ -89,26 +52,28 @@
 							<goal>testResources</goal>
 							<goal>test</goal>
 							<goal>preparePackage</goal>
+							<goal>bdd</goal>
 						</goals>
-						<configuration>
-							<preloadSources>
-								<source>src/test/javascript/lib/jquery.js</source>
-								<source>src/test/javascript/lib/underscore.js</source>
-								<source>src/test/javascript/lib/backbone.js</source>
-								<source>src/test/javascript/app/sample.backbone.app.js</source>
-								<source>src/test/javascript/lib/jasmine-dom-fixtures.js</source>
-								<source>src/test/javascript/lib/jasmine-dom-matchers.js</source>							
-							</preloadSources>
-							<jsTestSrcDir>src/test/javascript/specs</jsTestSrcDir>
-							<browserVersion>FIREFOX_3_6</browserVersion>
-						</configuration>
 					</execution>
 				</executions>
+				<configuration>
+					<preloadSources>
+						<source>src/test/javascript/lib/jquery.js</source>
+						<source>src/test/javascript/lib/underscore.js</source>
+						<source>src/test/javascript/lib/backbone.js</source>
+						<source>src/test/javascript/app/sample.backbone.app.js</source>
+						<source>src/test/javascript/lib/jasmine-dom-fixtures.js</source>
+						<source>src/test/javascript/lib/jasmine-dom-matchers.js</source>							
+					</preloadSources>
+					<jsTestSrcDir>src/test/javascript/specs</jsTestSrcDir>
+					<browserVersion>FIREFOX_3_6</browserVersion>
+				</configuration>
 			</plugin>
 
 			<plugin>
 				<groupId>net.alchim31.maven</groupId>
 				<artifactId>yuicompressor-maven-plugin</artifactId>
+				<version>1.3.0</version>
 				<executions>
 					<execution>
 						<goals>
