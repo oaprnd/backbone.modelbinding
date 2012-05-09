@@ -1,6 +1,6 @@
 ### Documentation, license, packages, etc, everything can be found here:
 
-### [oaprnd.github.com/backbone.modelbinding](http://oaprnd.github.com/backbone.modelbinding/)
+#### [http://oaprnd.github.com/backbone.modelbinding](http://oaprnd.github.com/backbone.modelbinding/)
 
 ---
 
@@ -34,4 +34,3 @@ user experience.
 The [upstream project](https://github.com/derickbailey/backbone.modelbinding) by
 [Derick Bailey](https://github.com/derickbailey) was abandoned on 4/22/12. This 
 project is a continuation
-
