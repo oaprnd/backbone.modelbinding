@@ -467,13 +467,13 @@
 						element.text(val);
 						break;
 					case "enabled":
-						element.attr("disabled", !val);
+						element.attr('disabled', !val);
 						break;
 					case "displayed":
-						element[val ? "show" : "hide"]();
+						element.css('display', val ? 'block' : 'none');
 						break;
 					case "hidden":
-						element[val ? "hide" : "show"]();
+						element.css('display', val ? 'none' : 'block');
 						break;
 					default:
 						if (element[0].type != "checkbox" && element[0].type != "radio") {
@@ -554,7 +554,7 @@
 				handler: StandardBinding
 			},
 			hidden : {
-				selector : "input[type='hidden']", 
+				selector : "input[type='hidden']",
 				handler : StandardBinding
 			},
 			textarea : {

@@ -1,10 +1,12 @@
 describe("data-bind conventions", function(){
-  beforeEach(function(){
+
+  beforeEach(function() {
     this.model = new AModel({
       villain: "mrMonster",
       doctor: "Seuss",
       pet: "cat",
-      isValid: false
+      isValid: false,
+      isSecret: true,
     });
     this.view = new AView({model: this.model});
   });
@@ -75,7 +77,7 @@ describe("data-bind conventions", function(){
       this.el = this.view.$("#clicker");
     });
 
-    it("should set the element's disabled value to the model's value, immediately", function(){
+    it("should set the element's disabled value to the model's value, immediately - truthy", function(){
       expect(this.el.attr("disabled")).toBeTruthy();
     });
 
@@ -91,7 +93,7 @@ describe("data-bind conventions", function(){
       this.el = this.view.$("#unclicker");
     });
 
-    it("should set the element's disabled value to the model's value, immediately", function(){
+    it("should set the element's disabled value to the model's value, immediately - falsy", function(){
       expect(this.el.attr("disabled")).toBeFalsy();
     });
 
@@ -123,29 +125,29 @@ describe("data-bind conventions", function(){
       this.el = this.view.$("#showHideThing");
     });
 
-    it("should set the element's disabled value to the model's value, immediately", function(){
+    it("should set the element's displayed value to the model's value, immediately to be none", function(){
       expect(this.el.css("display")).toBe("none");
     });
 
-    it("should set the element's disabled value when the model's value is changed", function(){
-      this.model.set({isValid: true});
-      expect(this.el).toBeHidden();
+    it("should set the element's displayed value when the model's value is changed", function(){
+    	this.view.model.set({ isValid: true });
+    	expect(this.el.css("display")).toBe("block");
     });
   });
-  
+
   describe("when a data-bind is configured to set visible", function(){
     beforeEach(function(){
-      this.view.render();
-      this.el = this.view.$("#showHideAnotherThing");
+    	this.view.render();
+    	this.el = this.view.$("#showHideAnotherThing");
     });
 
-    it("should set the element's disabled value to the model's value, immediately", function(){
-      expect(this.el.css("display")).not.toBe("none");
+    it("should set the element's disabled value to the model's value, immediately to be block", function(){
+    	expect(this.el.css("display")).toBe("none");
     });
 
     it("should set the element's disabled value when the model's value is changed", function(){
-      this.model.set({isValid: true});
-      expect(this.el).toBeHidden();
+    	this.view.model.set({ isSecret: false });
+    	expect(this.el.css("display")).toBe("block");
     });
   });
 });

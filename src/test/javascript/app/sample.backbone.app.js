@@ -7,7 +7,7 @@ AView = Backbone.View.extend({
       <img id='avatar' data-bind='src url; class name'>\
       <input id='noType'>\
       <div id='showHideThing' data-bind='displayed isValid' />\
-      <div id='showHideAnotherThing' data-bind='hidden isValid' />\
+      <div id='showHideAnotherThing' data-bind='hidden isSecret' />\
       <button id='unclicker' data-bind='disabled isValid'>Click Me!</button>\
       <button id='clicker' data-bind='enabled isValid'>Click Me!</button>\
       <div id='villain' data-bind='html villain'><p>test</p></div>\
