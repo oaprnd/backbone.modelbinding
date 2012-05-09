@@ -35,6 +35,14 @@ It's easy to get up and running. You only need to have Backbone (including under
 a requirement for Backbone) and jQuery in your page before including the backbone.modelbinding
 plugin.
 
+You have three options of obtaining backbone.modelbinding.js:
+* Download development version [backbone.modelbinding.js](https://raw.github.com/oaprnd/backbone.modelbinding/master/src/main/javascript/backbone.modelbinding.js)
+* Download minified version backbone.modelbinding.min.js (not ready yet)
+* Build project by your own:
+** git clone git://github.com/oaprnd/backbone.modelbinding.git
+** mvn install (this will generate minified file and perform all tests)
+** mvn jasmine:bdd to execute online Jasmine specs only
+
 ### Prerequisites
 
 * Backbone.js v0.9.0
