@@ -39,9 +39,9 @@
         <ul></ul>
       </nav>
       <section>
-        <h1>About Backbone.ModelBinding</h1>
+        <h1>About</h1>
 
-<p>Convention-based, awesome model binding for <a href="http://documentcloud.github.com/backbone">Backbone.js</a>,
+<p>Convention-based model binding for <a href="http://documentcloud.github.com/backbone">Backbone.js</a>,
 inspired by <a href="http://xtargets.com/2011/06/11/binding-model-attributes-to-form-elements-with-backbone-js/">Brad Phelan</a>,
 <a href="http://knockoutjs.com/">Knockout.js</a> data-binding capabilities, 
 and <a href="http://userinexperience.com/?p=633">Brandon Satrom</a>'s work with Knockout.</p>
@@ -78,12 +78,17 @@ plugin.</p>
 
 <h3>Building Project on your local PC</h3>
 
+This section is applicable only to the ones who would like to be involved in Backbone.Modelbinding
+plugin development. If you do not want to change Backbone.Modelbinding source you can skip this section.
+
 <p>Prerequisites:</p>
 
 <ul>
-<li>JDK installed</li>
+<li>JDK 1.6 installed</li>
 <li>Maven installed and available in PATH</li>
-</ul><p>Download project to your local repo:</p>
+</ul>
+
+<p>Download project to your local repo:</p>
 
 <pre><code>$ git clone git://github.com/oaprnd/backbone.modelbinding.git
 </code></pre>
@@ -97,19 +102,15 @@ generated while the build, so if you want to edit source file you should change 
        \_ backbone.modelbinding.js
 </code></pre>
 
-<p>When you change your code you can run the build by executing</p>
-
-<p>** git clone git://github.com/oaprnd/backbone.modelbinding.git
-** mvn install (this will generate minified file and perform all tests)
-** mvn jasmine:bdd to execute online Jasmine specs only</p>
-
 <h3>Prerequisites</h3>
 
 <ul>
 <li>Backbone.js v0.9.0</li>
 <li>Underscore.js v1.3.1</li>
 <li>jQuery v1.7.1</li>
-</ul><p>This is a plugin for Backbone.js and is built and tested against these versions of these
+</ul>
+
+<p>This is a plugin for Backbone.js and is built and tested against these versions of these
 libraries. At this point, I make no guarantees of it working with any version of Backbone or jQuery.</p>
 
 <h3>Get The ModelBinding Plugin</h3>
@@ -720,6 +721,14 @@ When above example would be:</p>
 
 <h2>Release Notes</h2>
 
+<h3>v0.5.1</h3>
+
+<ul>
+<li>Switch project build from Rake to Maven</li>
+<li>Always use newest jQuery, Underscore.js and Backbone.js</li>
+<li>Significant checkstyle fixes</li>
+</ul>
+
 <h3>v0.5.0</h3>
 
 <ul>
@@ -859,7 +868,9 @@ v1.6.2)</li>
 <li>Removed formBinding code</li>
 <li>Removed htmlBinding code</li>
 <li>Significant internal code cleanup and restructuring</li>
-</ul><h1>Legal Mumbo Jumbo (MIT License)</h1>
+</ul>
+
+<h1>License</h1>
 
 <p>Copyright (c) 2011 Derick Bailey, Muted Solutions, LLC</p>
 
