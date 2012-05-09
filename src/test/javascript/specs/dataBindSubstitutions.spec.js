@@ -47,7 +47,7 @@ describe("configured data-bind substitutions", function(){
   beforeEach(function(){
     Backbone.ModelBinding.Configuration.dataBindSubst({
       text: "text subst",
-      html: "&nbsp;"
+      html: "<b></b>"
     });
     this.model = new AModel({
       doctor: "Seuss"
@@ -78,7 +78,7 @@ describe("configured data-bind substitutions", function(){
     });
 
     it("should set the html to an empty string", function(){
-      expect(this.el.html()).toBe("&nbsp;");
+      expect(this.el.html()).toBe("<b></b>");
     });
   });
 
