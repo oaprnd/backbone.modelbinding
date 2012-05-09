@@ -123,20 +123,44 @@
 
 		};
 
+		/**
+		 * Default attributes to be used to bind model attribute with HTML element. For example
+		 * when your model is:
+		 *
+		 * var model = Backbone.Model.extend({
+		 *   something : 'some text'
+		 * });
+		 *
+		 * Then to create bi-directional binding you should use such HTML element:
+		 *
+		 * <input type="text" id="something" />
+		 *
+		 * Note that model attribute and HTML element ID are the same!
+		 */
 		modelBinding.Configuration.bindindAttrConfig = {
-			text: "id",
-			hidden: "id",
-			textarea: "id",
-			password: "id",
-			radio: "name",
-			checkbox: "id",
-			select: "id",
-			number: "id",
-			range: "id",
-			tel: "id",
-			search: "id",
-			url: "id",
-			email: "id"
+
+			// HTML4 inputs
+			text : "id",
+			hidden : "id",
+			textarea : "id",
+			password : "id",
+			radio : "name",
+			checkbox : "id",
+			select : "id",
+
+			// HTML5 inputs
+			number : "id",
+			range : "id",
+			tel : "id",
+			search : "id",
+			url : "id",
+			email : "id",
+			date : "id",
+			datetime : "id",
+			datetime_local : "id",
+			month : "id",
+			time : "id",
+			week : "id"
 		};
 
 		modelBinding.Configuration.store = function () {
@@ -429,6 +453,7 @@
 		// Data-Bind Binding Methods
 		// ----------------------------
 		var DataBindBinding = (function (Backbone, _, $) {
+
 			var dataBindSubstConfig = {
 				"default": ""
 			};
@@ -462,47 +487,47 @@
 			};
 
 			var setOnElement = function (element, attr, val) {
-					val = modelBinding.Configuration.getDataBindSubst(attr, val);
-					switch (attr) {
-					case "html":
-						element.html(val);
-						break;
-					case "text":
-						element.text(val);
-						break;
-					case "enabled":
-						element.attr('disabled', !val);
-						break;
-					case "displayed":
-						element.css('display', val ? 'block' : 'none');
-						break;
-					case "hidden":
-						element.css('display', val ? 'none' : 'block');
-						break;
-					default:
-						if (element[0].type != "checkbox" && element[0].type != "radio") {
-							element.attr(attr, val);
-						}
+				val = modelBinding.Configuration.getDataBindSubst(attr, val);
+				switch (attr) {
+				case "html":
+					element.html(val);
+					break;
+				case "text":
+					element.text(val);
+					break;
+				case "enabled":
+					element.attr('disabled', !val);
+					break;
+				case "displayed":
+					element.css('display', val ? 'block' : 'none');
+					break;
+				case "hidden":
+					element.css('display', val ? 'none' : 'block');
+					break;
+				default:
+					if (element[0].type != "checkbox" && element[0].type != "radio") {
+						element.attr(attr, val);
 					}
-				};
+				}
+			};
 
 			var splitBindingAttr = function (element) {
-					var dataBindConfigList = [];
-					var dataBindAttributeName = modelBinding.Conventions.databind.selector.replace(/^(.*\[)([^\]]*)(].*)/g, '$2');
-					var databindList = element.attr(dataBindAttributeName).split(";");
-					_.each(databindList, function (attrbind) {
-						var databind = $.trim(attrbind).split(" ");
+				var dataBindConfigList = [];
+				var dataBindAttributeName = modelBinding.Conventions.databind.selector.replace(/^(.*\[)([^\]]*)(].*)/g, '$2');
+				var databindList = element.attr(dataBindAttributeName).split(";");
+				_.each(databindList, function (attrbind) {
+					var databind = $.trim(attrbind).split(" ");
 
-						// make the default special case "text" if none specified
-						if (databind.length == 1) databind.unshift("text");
+					// make the default special case "text" if none specified
+					if (databind.length == 1) databind.unshift("text");
 
-						dataBindConfigList.push({
-							elementAttr: databind[0],
-							modelAttr: databind[1]
-						});
+					dataBindConfigList.push({
+						elementAttr: databind[0],
+						modelAttr: databind[1]
 					});
-					return dataBindConfigList;
-				};
+				});
+				return dataBindConfigList;
+			};
 
 			var getEventConfiguration = function (element, databind) {
 				var config = {};
@@ -526,7 +551,7 @@
 				return config;
 			};
 
-			var methods = {};
+			var methods = { };
 
 			methods.bind = function (selector, view, model, config) {
 				var modelBinder = this;
@@ -585,30 +610,55 @@
 				selector: "*[data-bind]",
 				handler: DataBindBinding
 			},
-			// HTML5 input
-			number: {
-				selector: "input[type=number]",
+
+			// HTML5 inputs (after http://www.w3schools.com/html5/html5_form_input_types.asp)
+			date : {
+				selector: "input[type=date]",
 				handler: StandardBinding
 			},
-			range: {
-				selector: "input[type=range]",
+			datetime : {
+				selector: "input[type=datetime]",
 				handler: StandardBinding
 			},
-			tel: {
-				selector: "input[type=tel]",
+			datetime_local : {
+				selector: "input[type=datetime-local]",
 				handler: StandardBinding
 			},
-			search: {
-				selector: "input[type=search]",
-				handler: StandardBinding
-			},
-			url: {
-				selector: "input[type=url]",
-				handler: StandardBinding
-			},
-			email: {
+			email : {
 				selector: "input[type=email]",
 				handler: StandardBinding
+			},
+			month : {
+				selector: "input[type=month]",
+				handler: StandardBinding
+			},
+			number : {
+				selector : "input[type=number]",
+				handler : StandardBinding
+			},
+			range : {
+				selector : "input[type=range]",
+				handler : StandardBinding
+			},
+			search : {
+				selector : "input[type=search]",
+				handler : StandardBinding
+			},
+			tel : {
+				selector : "input[type=tel]",
+				handler : StandardBinding
+			},
+			time : {
+				selector : "input[type=time]",
+				handler : StandardBinding
+			},
+			url : {
+				selector : "input[type=url]",
+				handler : StandardBinding
+			},
+			week : {
+				selector : "input[type=week]",
+				handler : StandardBinding
 			}
 		};
 
