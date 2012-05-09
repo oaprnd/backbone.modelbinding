@@ -1,0 +1,892 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Backbone.Modelbinding by oaprnd</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Backbone.Modelbinding</h1>
+        <p>backbone.js model binding plugin</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/oaprnd/backbone.modelbinding" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/oaprnd/backbone.modelbinding/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/oaprnd/backbone.modelbinding/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h2>About Backbone.ModelBinding</h2>
+
+<p>Convention-based, awesome model binding for <a href="http://documentcloud.github.com/backbone">Backbone.js</a>,
+inspired by <a href="http://xtargets.com/2011/06/11/binding-model-attributes-to-form-elements-with-backbone-js/">Brad Phelan</a>,
+<a href="http://knockoutjs.com/">Knockout.js</a> data-binding capabilities, 
+and <a href="http://userinexperience.com/?p=633">Brandon Satrom</a>'s work with Knockout.</p>
+
+<p>This plugin provides a simple, convention based mechanism to create bi-directional
+binding between your Backbone models and your HTML elements, including form inputs, 
+divs, spans, and so on. </p>
+
+<p>Instead of writing the same boiler plate code to read from your form inputs and
+populate the model attributes, for every input on your form, you can make a 
+single call to <code>Backbone.ModelBinding.bind(myView)</code> and have all of your inputs
+automatically wired up. Any change you make to a form input will populate a
+corresponding model attribute for you. The binding is bi-directional, as well.
+This means that changes to your underlying model will be propagated to your
+form inputs without having to manually bind to your model's <code>change</code> events.</p>
+
+<p>If you're looking for Knockout.js-style <code>data-bind</code> attributes, for Backbone,
+then this is the plugin for you. Backbone.ModelBinding provides some very basic
+support for <code>data-bind</code> attributes, allowing your Backbone model <code>change</code> events
+to modify nearly any HTML element on your page. Whether it's updating the text
+of a <code>&lt;div&gt;</code>, or changing the css class of an <code>&lt;img&gt;</code> tag, the <code>data-bind</code> 
+support provides a very powerful and flexible means of creating a very rich
+user experience.</p>
+
+<p>The <a href="https://github.com/derickbailey/backbone.modelbinding">upstream project</a> by
+<a href="https://github.com/derickbailey">Derick Bailey</a> was abandoned on 4/22/12. This 
+project is a continuation</p>
+
+<h2>Getting Started</h2>
+
+<p>It's easy to get up and running. You only need to have Backbone (including underscore.js - 
+a requirement for Backbone) and jQuery in your page before including the backbone.modelbinding
+plugin.</p>
+
+<h3>Building Project on your local PC</h3>
+
+<p>Prerequisites:</p>
+
+<ul>
+<li>JDK installed</li>
+<li>Maven installed and available in PATH</li>
+</ul><p>Download project to your local repo:</p>
+
+<pre><code>$ git clone git://github.com/oaprnd/backbone.modelbinding.git
+</code></pre>
+
+<p>Please note that <code>backbone.modelbinding.js</code> and <code>backbone.modelbinding.min.js</code> in the root directory are
+generated while the build, so if you want to edit source file you should change this one:</p>
+
+<pre><code>src
+ \_ main
+    \_ javascript
+       \_ backbone.modelbinding.js
+</code></pre>
+
+<p>When you change your code you can run the build by executing</p>
+
+<p>** git clone git://github.com/oaprnd/backbone.modelbinding.git
+** mvn install (this will generate minified file and perform all tests)
+** mvn jasmine:bdd to execute online Jasmine specs only</p>
+
+<h3>Prerequisites</h3>
+
+<ul>
+<li>Backbone.js v0.9.0</li>
+<li>Underscore.js v1.3.1</li>
+<li>jQuery v1.7.1</li>
+</ul><p>This is a plugin for Backbone.js and is built and tested against these versions of these
+libraries. At this point, I make no guarantees of it working with any version of Backbone or jQuery.</p>
+
+<h3>Get The ModelBinding Plugin</h3>
+
+<p>Download the <code>backbone.modelbinding.js</code> file from this github repository and copy it into 
+your javascripts folder. Add the needed <code>&lt;script&gt;</code> tag to bring the plugin into any page
+that wishes to use it. Be sure to include the modelbinding file <em>after</em> the backbone.js file.</p>
+
+<h3>Model Binding</h3>
+
+<p>The model binding code is executed with a call to <code>Backbone.ModelBinding.bind(view)</code>. There are
+several places that it can be called from, depending on your circumstances.</p>
+
+<p>All of the element binding happens within the context of the view's <code>el</code>, therefore you must
+call the model binding code after your view's <code>el</code> has been populated with the elements that
+will be bound to.</p>
+
+<h4>Binding After Rendering</h4>
+
+<p>If your view modifies the html contents of the view's <code>el</code> in the <code>render</code> method, you should 
+call the model binding after the modifications are made:</p>
+
+<pre><code>SomeView = Backbone.View.extend({
+  render: function(){
+    // ... render your form here
+    $(this.el).html("... some html and content goes here ... ");
+
+    // execute the model bindings
+    Backbone.ModelBinding.bind(this);
+  }
+});
+</code></pre>
+
+<h4>Binding A View That Does Not Render</h4>
+
+<p>If, however, your view has an <code>el</code> that represents an existing element in your html, and the
+contents of the <code>el</code> are not modified during a call to <code>render</code>, then you can make the call to
+the model binding code in the initializer or anywhere else.</p>
+
+<pre><code>&lt;form id="some-form"&gt;
+  Name: &lt;input id="name"&gt;
+&lt;/form&gt;
+</code></pre>
+
+<pre><code>FormView = Backbone.View.extend({
+  el: "#some-form",
+
+  initialize: function(){
+    Backbone.ModelBinding.bind(this);
+  }
+});
+</code></pre>
+
+<h4>Binding From Outside A View</h4>
+
+<p>There is no requirement for the model binding code to be called from within a view directly.
+You can bind the view from external code, like this:</p>
+
+<pre><code>FormView = Backbone.View.extend({
+  el: "#some-form",
+});
+
+formView = new FormView();
+Backbone.ModelBinding.bind(formView);
+</code></pre>
+
+<h3>Model Unbinding</h3>
+
+<p>When your view has completed its work and is ready to be removed from the DOM, you not only
+need to unbind your view's events (handled through the view's <code>remove</code> method, typically), you
+also need to unbind the model events that are bound in the view. </p>
+
+<p>Backbone.ModelBinding can unbind its own events through a simple call to 
+<code>Backbone.ModelBinding.unbind(view)</code>. If you do not call this method when your view is being
+closed / removed / cleaned up, then you may end up with memory leaks and zombie views that
+are still responding to model change events.</p>
+
+<pre><code>FormView = Backbone.View.extend({
+  el: "#some-form",
+
+  initialize: function(){
+    Backbone.ModelBinding.bind(this);
+  },
+
+  close: function(){
+    this.remove();
+    this.unbind();
+    Backbone.ModelBinding.unbind(this);
+  }
+});
+</code></pre>
+
+<h2>Convention Bindings</h2>
+
+<p>Automatic bi-directional binding between your form input and your model. </p>
+
+<p>The convention-based binding requires no additional configuration or code in your
+view, other than calling the <code>Backbone.ModelBinding.bind(this);</code> as noted above.
+With the conventions binding, your <code>&lt;input&gt;</code> fields will be bound to the views model
+by the id of the input. </p>
+
+<p>For example:</p>
+
+<pre><code>// something.html
+
+&lt;input id='name'&gt;
+
+// something.js
+
+SomeModel = Backbone.Model.extend();
+
+SomeView = Backbone.View.extend({
+  render: function(){
+    // ... render your form here
+
+    // execute the defined bindings
+    Backbone.ModelBinding.bind(this);
+  }
+});
+
+model = new SomeModel();
+view = new SomeView({model: model});
+
+model.set({name: "some name"});
+
+</code></pre>
+
+<p>In this example, when <code>model.set</code> is called to set the name, "some name" will appear
+in the <code>#name</code> input field. Similarly, when the <code>#name</code> input field is changed, the
+value entered into that field will be sent to the model's <code>name</code> property.</p>
+
+<h2>Data-Bind Attributes</h2>
+
+<p>Backbone.ModelBinding supports Knockout-style data-bind attributes on any arbitrary
+HTML element. These bindings will populate any attribute, the text, or HTML contents
+of an HTML element based on your configurations. This is particularly useful when a
+model that is being edited is also being displayed elsewhere on the screen.</p>
+
+<p>To bind an element to a model's properties, add a <code>data-bind</code> attribute to the element
+and specify what should be updated with which model property using an <code>elementAttr modelAttr</code>
+format. For example <code>&lt;span data-bind="text name"&gt;</code> will update the span's text with
+the model's name property, when the model's name changes.</p>
+
+<pre><code>&lt;form&gt;
+  &lt;input type="text" id="name"&gt;
+&lt;/form&gt;
+Name: &lt;span data-bind="text name"&gt;
+
+SomeView = Backbone.View.extend({
+  // ... 
+
+  render: function(){
+    // ... 
+    Backbone.ModelBinding.bind(this);
+  }
+});
+
+someModel = new SomeModel();
+someView = new SomeView({model: someModel});
+</code></pre>
+
+<p>In this example, the model's <code>name</code> will be updated when you type into the text box
+and then tab or click away from it (to fire the change event). When the model's <code>name</code>
+property is updated, the <code>data-bind</code> convention will pick up the change and set
+the text of the <code>span</code> to the model's name.</p>
+
+<h3>Data-Bind Multiple Attributes</h3>
+
+<p>Multiple attributes can be specified for a single element's <code>data-bind</code> by separating
+each with a <code>;</code> (semi-colon). For example:</p>
+
+<pre><code>&lt;form&gt;
+  &lt;input type="text" id="name"&gt;
+&lt;/form&gt;
+Name: &lt;span data-bind="text name; class name"&gt;
+
+SomeView = Backbone.View.extend({
+  // ... 
+
+  render: function(){
+    // ... 
+    Backbone.ModelBinding.bind(this);
+  }
+});
+
+someModel = new SomeModel();
+someView = new SomeView({model: someModel});
+</code></pre>
+
+<p>In this example, both the text and the css class will be updated when you change
+the name input. You can data-bind as many attributes as you need, in this manner.</p>
+
+<h3>Configurating the data-bind selector</h3>
+
+<p>By default, the data-bind capabilities looks for a <code>data-bind</code> attribute on the
+HTML elements being bound. This is configurable, though:</p>
+
+<pre><code>Backbone.ModelBinding.Conventions.databind.selector = "[my-binder]";
+</code></pre>
+
+<p>This example will look for elements with an attribute of <code>my-binder</code> instead of
+<code>data-bind</code>.</p>
+
+<pre><code>&lt;div my-binder="text someAttr"&gt;&lt;/div&gt;
+</code></pre>
+
+<h3>Special Cases For data-bind</h3>
+
+<p>There are several special cases for the data-bind attribute. These allow a little more
+functionality than just setting an attribute on an element. </p>
+
+<ul>
+<li>(default) - if you only specify the model property, defaults to the text of the html element</li>
+<li>text - replace the text contents of the element</li>
+<li>html - replace the html contents of the element</li>
+<li>enabled - enable or disable the html element</li>
+</ul><h4>(default)</h4>
+
+<p>If you only specify the model's property in the data-bind attribute, then the data-bind
+will bind the value of that model property to the <code>text</code> of the html element.</p>
+
+<pre><code>&lt;div data-bind="name"/&gt;
+</code></pre>
+
+<p>See the document for data-bind text, below.</p>
+
+<h4>text</h4>
+
+<p>If you set the data-bind attribute to use <code>text</code>, it will replace the text contents of the
+html element instead of just setting an element attribute.</p>
+
+<pre><code>&lt;div id="someDiv" data-bind="text someProperty"&gt;&lt;/div&gt;
+
+
+someModel.set({someProperty: "some value"});
+</code></pre>
+
+<h4>html</h4>
+
+<p>If you set the data-bind attribute to use <code>html</code>, it will replace the entire
+inner html of the html element, instead of just setting an element attribute.</p>
+
+<pre><code>&lt;div id="someDiv" data-bind="html someProperty"&gt;&lt;/div&gt;
+
+
+someModel.set({someProperty: "some value"});
+</code></pre>
+
+<h4>enabled</h4>
+
+<p>This special case breaks the html element standard of using a <code>disabled</code> attribute, specifically
+to inverse the logic used for enabling / disabling an element, to keep the data-bind attribute
+clean and easy to read.</p>
+
+<p>If you have a model with a property that indicates a negative state, such as <code>invalid</code>, then you
+can use a data-bind attribute of <code>disabled</code>:</p>
+
+<pre><code>&lt;button id="someButton" data-bind="disabled invalid"&gt;&lt;/div&gt;
+
+
+someModel.set({invalid: true});
+</code></pre>
+
+<p>However, some developers prefer to use positive state, such as <code>isValid</code>. In this case, setting
+the disabled attribute to the model's isValid property would result in the button being disabled
+when the model is valid and enabled when the model is not valid. To correct this, a special case
+has been added to enable and disable an element with <code>enabled</code>.</p>
+
+<pre><code>&lt;button id="someButton" data-bind="enabled isValid"&gt;&lt;/div&gt;
+
+
+someModel.set({isValid: false});
+</code></pre>
+
+<p>This will disable the button when the model is invalid and enable the button when the model is
+valid.</p>
+
+<h4>displayed</h4>
+
+<p>This allows you to specify that an element should be shown or hidden by setting the css
+of the element according to the value of the model properties specified.</p>
+
+<pre><code>&lt;div data-bind="displayed isValid" /&gt;
+
+someModel.set({isValid: false});
+</code></pre>
+
+<p>When the model's property is set to false, the HTML element's <code>display</code> css will be set
+to <code>none</code>. When the model's property is set to true, the HTML element's <code>display</code> css
+will be set to <code>block</code>.</p>
+
+<h4>hidden</h4>
+
+<p>This is the inverse of <code>displayed</code>.</p>
+
+<pre><code>&lt;div data-bind="hidden isValid" /&gt;
+
+someModel.set({isValid: true});
+</code></pre>
+
+<p>When the model's property is set to false, the HTML element's <code>display</code> css will be set
+to <code>block</code>. When the model's property is set to true, the HTML element's <code>display</code> css
+will be set to <code>none</code>.</p>
+
+<h3>Data-Bind To Any Model Event</h3>
+
+<p>In addition to binding model attributes, you can use the data-bind functionality to
+bind to any arbitrary event that the model fires. This is done with the syntax:</p>
+
+<div class="highlight">
+<pre><span class="nt">&lt;div</span> <span class="na">data-bind=</span><span class="s">"text event:foo"</span><span class="nt">&gt;&lt;/div&gt;</span>
+</pre>
+</div>
+
+
+<p>where <code>foo</code> is the event that is triggered from the model. The first parameter
+of the event will be used as the data for the element.</p>
+
+<div class="highlight">
+<pre><span class="nx">model</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">"foo"</span><span class="p">,</span> <span class="s2">"bar"</span><span class="p">);</span>
+</pre>
+</div>
+
+
+<p>This will cause the above data-binding to produce <code>&lt;div&gt;bar&lt;/div&gt;</code>.</p>
+
+<h3>Data-Bind Substitutions</h3>
+
+<p>If a model's property is <code>unset</code>, the data-bind may not update correctly when using <code>text</code> or <code>html</code>
+as the bound attribute of the element.</p>
+
+<pre><code>&lt;div data-bind="text something"&gt;&lt;/div&gt;
+
+model.set({something: "whatever"});
+model.unset("something");
+</code></pre>
+
+<p>The result will be a div with it's text set to "". this is handled through the data-bind's 
+substitutions for undefined values. The default substitution is to replace an undefined
+value with an empty string. However, this can be per attribute:</p>
+
+<pre><code>&lt;div data-bind="text something"&gt;&lt;/div&gt;
+&lt;div data-bind="html something"&gt;&lt;/div&gt;
+
+Backbone.ModelBinding.Configuration.dataBindSubst({
+  text: "undefined. setting text to this",
+  html: "&amp;nbsp;"
+});
+model.set({something: "whatever"});
+model.unset("something");
+</code></pre>
+
+<p>The result of this example will be a div that displays "undefined. setting the text to this" and a
+div whose contents is a single space, instead of being empty.</p>
+
+<h2>Form Binding Conventions</h2>
+
+<p>The following form input types are supported by the form convention binder:</p>
+
+<ul>
+<li>text</li>
+<li>textarea</li>
+<li>password</li>
+<li>checkbox</li>
+<li>select </li>
+<li>radio button groups</li>
+</ul><p>HTML5</p>
+
+<ul>
+<li>number</li>
+<li>range</li>
+<li>email</li>
+<li>url</li>
+<li>tel</li>
+<li>search</li>
+</ul><p>Radio buttons are group are assumed to be grouped by the <code>name</code> attribute of the 
+radio button items. </p>
+
+<p>Select boxes will populate 2 separate fields into the model that they are bound to.
+The standard <code>#fieldid</code> will be populated with the selected value. An additional
+<code>{#fieldid}_text</code> will be populated with the text from the selected item. For example,
+a selected option of </p>
+
+<pre><code>&lt;select id='company'&gt;
+  &lt;option value="foo_bar"&gt;Foo Bar Widgets, Inc.&lt;/option&gt;
+  ...
+&lt;/select&gt;
+</code></pre>
+
+<p>will populate the <code>company</code> property of the model with "foo_bar", and will populate
+the <code>company_text</code> property of the model with "Foo Bar Widgets, Inc."</p>
+
+<p>There is no support for hidden fields at the moment, because there is no 'change' event
+that jQuery can listen to on a hidden field.</p>
+
+<h3>Configuring The Bound Attributes</h3>
+
+<p>The convention binding system allows you to specify the attribute to use for the convention, by
+the input type. The default configuration is:</p>
+
+<pre><code>{
+  text: "id",
+  textarea: "id",
+  password: "id",
+  radio: "name",
+  checkbox: "id",
+  select: "id"
+}
+</code></pre>
+
+<p>You can override this configuration and use any attribute you wish, by specifying any or all of
+these input types when you call the model binding. This is useful when you have field ids that
+do not match directly to the model properties. </p>
+
+<h4>Override All Element Binding Attributes</h4>
+
+<p>The following will use use the <code>class</code> attribute's value as the binding for all input field:</p>
+
+<pre><code>SomeView = Backbone.View.extend({
+  render: function(){
+    // ... some rendering here
+    Backbone.ModelBinding.bind(this, { all: "class" });
+  }
+});
+
+&lt;input type="text" id="the_model_name" class="name"&gt;
+</code></pre>
+
+<p>If the same convention needs to be used throughout an application, and not just withing a single
+view, the configuration can be set at a global level:</p>
+
+<pre><code>Backbone.ModelBinding.Configuration.configureAllBindingAttributes("class");
+</code></pre>
+
+<h4>Override Individual Element Binding Attributes</h4>
+
+<p>The following will use a <code>modelAttr</code> attribute value as the convention for text boxes, only.</p>
+
+<pre><code>SomeView = Backbone.View.extend({
+  render: function(){
+    // ... some rendering here
+    Backbone.ModelBinding.bind(this, { text: "modelAttr" });
+  }
+});
+
+&lt;input type="text" id="the_model_name" modelAttr="name"&gt;
+</code></pre>
+
+<p>When this text box has it's value changed, the model's <code>name</code> property will be populated with
+the value instead of <code>the_model_name</code>.</p>
+
+<p>If the same convention needs to be used throughout an application, and not just withing a single
+view, the configuration can be set at a global level:</p>
+
+<pre><code>Backbone.ModelBinding.Configuration.configureBindingAttributes({text: "modelAttr"});
+</code></pre>
+
+<p>Now all text boxes will update the model property specified in the text box's <code>modelAttr</code>.</p>
+
+<h2>Pluggable Conventions</h2>
+
+<p>The convention based bindings are pluggable. Each of the existing form input types can have it's
+convention replaced and you can add your own conventions for input types not currently handled,
+etc. </p>
+
+<p>To replace a convention entirely, you need to supply a json document that has two pieces of
+information: a jQuery selector string and an object with a <code>bind</code> method. Place the convention
+in the <code>Backbone.ModelBinding.Conventions</code> and it will be picked up and executed. The <code>bind</code>
+method receives three parameters: the jQuery selector you specified, the Backbone view, and
+the model being bound.</p>
+
+<p>You can replace the handler of an existing convention. For example, this will set the
+value of a textbox called <code>#name</code> to some text, instead of doing any real binding.</p>
+
+<pre><code>var nameSettingsHandler = {
+  bind: function(selector, view, model){
+    view.$("#name").val("a custom convention supplied this name");
+  }
+};
+
+Backbone.ModelBinding.Conventions.text.handler = nameSettingsHandler;
+</code></pre>
+
+<p>You can also create your own conventions that do just about anything you want. Here's an example
+that modifies the contents of <code>&lt;p&gt;</code> tags:</p>
+
+<pre><code>var PConvention = {
+  selector: "p",
+  handler: {
+    bind: function(selector, view, model){
+      view.$(selector).each(function(index){
+        var name = model.get("name");
+        $(this).html(name);
+      });
+    }
+  }
+};
+
+Backbone.ModelBinding.Conventions.paragraphs = PConvention;
+</code></pre>
+
+<p>This example will find all <code>&lt;p&gt;</code> tags in the view and render the <code>name</code> property from the model
+into that paragraph, replacing all other text. Note that the name of the convention is set to
+<code>paragraphs</code> when added to the conventions. This name did not exist prior to this assignment, so
+the convention was added. If you assign a convention to an existing name, you will replace that
+convention.</p>
+
+<p>The list of existing conventions includes:</p>
+
+<ul>
+<li>text</li>
+<li>password</li>
+<li>radio</li>
+<li>checkbox</li>
+<li>select</li>
+<li>textarea</li>
+<li>number</li>
+<li>range</li>
+<li>tel</li>
+<li>search</li>
+<li>url</li>
+<li>email</li>
+<li>databind</li>
+</ul><p>For fully functional, bi-directional binding convention examples, check out the source code
+to Backbone.ModelBinding in the <code>backbone.modelbinding.js</code> file.</p>
+
+<h2>Using Backbone.Modelbinding as an AMD module (require.js)</h2>
+
+<p>Backbone.Modelbinding detects an AMD loader like require.js and registrers as a module named 'modelbinding' if so.</p>
+
+<p>The prerequisites of Modelbinding must be known as AMD modules which is supported in following versions:</p>
+
+<ul>
+<li>JQuery 1.7</li>
+<li>Underscore 1.2.3</li>
+<li>Backbone, use jrburke's 0.5.3-optamd3 branch (<a href="https://github.com/jrburke/backbone/tree/optamd3">https://github.com/jrburke/backbone/tree/optamd3</a>) until supported by Backbone natively</li>
+</ul><h3>Setup</h3>
+
+<p>Module names must be 'jquery', 'underscore', and 'backbone' which is done easily by naming files as jquery.js, underscore.js and backbone.js placed
+in the same folder as require.js. Or by settings up require.js alias configure like</p>
+
+<pre><code>require.config({
+  paths: {
+  // AMD modules
+    jquery:       'libs/jquery/1.7.1/jquery',
+    underscore:   'libs/underscore/1.2.3/underscore',
+    backbone:     'libs/backbone/0.5.3-optamd3/backbone',
+    modelbinding: 'libs/backbone/modelbinding/0.4.1-amd/backbone.modelbinding'
+  }
+});
+</code></pre>
+
+<h3>Short Example</h3>
+
+<p>Load require.js as normal:</p>
+
+<pre><code>&lt;script type="text/javascript" src="js/require.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p>Hereafter require.js will take care of loading AMD module dependencies and you can use Backbone and Modelbinding
+as you are used to:</p>
+
+<pre><code>&lt;script type="text/javascript"&gt;
+  require ([
+    'jquery','underscore','backbone','modelbinding'
+  ], function ($, _, Backbone, Modelbinding ) {
+    ...
+    SomeView = Backbone.View.extend({
+      render: function(){
+        // ... render your form here
+        $(this.el).html("... some html and content goes here ... ");
+
+        // execute the model bindings
+        ModelBinding.bind(this);
+      }
+    });
+    ...
+  });
+&lt;/script&gt;
+</code></pre>
+
+<h3>Migrating to AMD</h3>
+
+<p>If you are converting existing code referencing the Backbone.Modelbinding namespace it can still be supported 
+by assigning the module to the namespace, optionally using require.js itself as an module. 
+When above example would be:</p>
+
+<pre><code>&lt;script type="text/javascript"&gt;
+  require ([
+    'require','jquery','underscore','backbone'
+  ], function (require, $, _, Backbone ) {
+    // use require.js to load modelbinding and assign to Backbone namespace:
+    Backbone.Modelbinding = require('modelbinding');
+    ...
+    SomeView = Backbone.View.extend({
+      render: function(){
+        // ... render your form here
+        $(this.el).html("... some html and content goes here ... ");
+
+        // execute the model bindings
+        Backbone.ModelBinding.bind(this);
+      }
+    });
+    ...
+  });
+&lt;/script&gt;
+</code></pre>
+
+<h2>Release Notes</h2>
+
+<h3>v0.5.0</h3>
+
+<ul>
+<li>
+<strong>BREAKING:</strong> Backbone v0.5.3 is no longer officially supported. 
+
+<ul>
+<li>It should work fine right now (Backbone v0.9.0 is mostly backward compatible), but I won't be testing against v0.5.x anymore. </li>
+<li>If you need support for v0.5.3, use ModelBinding v0.4.3</li>
+</ul>
+</li>
+<li>Fixed radio field group, name binding (#60)</li>
+<li>Updated Backbone to v0.9.0</li>
+<li>Updated Underscore to v1.3.1</li>
+<li>Updated jQuery to v1.7.1</li>
+</ul><h3>v0.4.3</h3>
+
+<ul>
+<li>Added ability for data-bind to bind to arbitrary events (#51)</li>
+<li>Fixed a few more global function leaks</li>
+</ul><h3>v0.4.2</h3>
+
+<ul>
+<li>AMD (asynchronous module definition) support for RequireJS and other CommonJS implementations</li>
+<li>Configure the selector used for element data-binding (#36).</li>
+<li>Fixed a small bug in radio group bindings, related to special characters (#42)</li>
+<li>Fixed a few more global var leaks (#40 &amp; #41)</li>
+</ul><h3>v0.4.1</h3>
+
+<ul>
+<li>Bind the existing value from an input element to the model on render, if no model value exists</li>
+<li>Added HTML5 input types to the form binding conventions: number, range, tel, search, url, email</li>
+</ul><h3>v0.4.0</h3>
+
+<ul>
+<li>Major internal rewrite to facilitate maintenance, new features, etc</li>
+<li>No public API changes (at least, I hope not!)</li>
+<li>Correctly unbind HTML element / jQuery events, when calling <code>unbind</code>
+</li>
+<li>Corrected the <code>data-bind</code> method for showing / hiding an element when using the <code>displayed</code> and <code>hidden</code> settings</li>
+<li>Corrected the global configuration so that it does not get reset after you call <code>bind</code> the first time</li>
+<li>Now uses an internal object call <code>ModelBinder</code>, which is attached to the view that binding occurs on</li>
+<li>The <code>ModelBinder</code> instance stores all of the binding configuration and callbacks for that view, allowing much faster / easier / better unbinding</li>
+</ul><h3>v0.3.10</h3>
+
+<ul>
+<li>When binding to a select box and the model has a value not present in the box, reset the model's value to the box's</li>
+<li>Fix for using Backbone.noConflict(), Backbone was either wrong version or undefined when it was used inside ModelBinding. </li>
+<li>Added some missing ;</li>
+<li>Fix some documentation issues</li>
+</ul><h3>v0.3.9</h3>
+
+<ul>
+<li>Fixed an issue with jQuery 1.6.4 determining if check boxes are checked or not</li>
+<li>Minor internal clean up</li>
+</ul><h3>v0.3.8</h3>
+
+<ul>
+<li>Fix for Internet Explorer not having a <code>trim</code> method on strings</li>
+</ul><h3>v0.3.7</h3>
+
+<ul>
+<li>Data-bind multiple attributes for a single element</li>
+<li>Default data-bind substitutaion to '' for all attributes</li>
+</ul><h3>v0.3.6</h3>
+
+<ul>
+<li>Fixed a bug that prevented <code>&lt;input&gt;</code> elements with no <code>type</code> attribute from being bound</li>
+</ul><h3>v0.3.5</h3>
+
+<ul>
+<li>Fixed a bug in configuring the binding attribute for textarea elements</li>
+</ul><h3>v0.3.4</h3>
+
+<ul>
+<li>Data-bind defaults to the html element's <code>text</code> if you only specify the model property: <code>data-bind="name"</code>
+</li>
+<li>Fixed issue with binding 1 / 0 to checkboxes (truthy / falsy values)</li>
+</ul><h3>v0.3.3</h3>
+
+<ul>
+<li>Added data-bind attribute for setting an HTML element's <code>display</code> css</li>
+<li>Added inserve of data-bind <code>displayed</code> as data-bind <code>hidden</code>
+</li>
+<li>Corrected issue with binding a model's property to a checkbox, when the property is false</li>
+</ul><h3>v0.3.2</h3>
+
+<ul>
+<li>Data-bind substitutions - lets you replace "undefined" with another, set value, when using data-bind</li>
+</ul><h3>v0.3.1</h3>
+
+<ul>
+<li>Corrected issue with <code>unset</code>ing a model property, in the data-bind convention</li>
+</ul><h3>v0.3.0</h3>
+
+<ul>
+<li>
+<strong>Breaking Change:</strong> Changed the <code>Backbone.ModelBinding.call(view)</code> method signature to <code>Backbone.ModelBinding.bind(view)</code>
+</li>
+<li>Added ability to unbind model binding with <code>unbind</code> method, to prevent memory leaks and zombie forms</li>
+<li>Added backbone.modelbinding.min.js to the repository, compiled with 
+<a href="http://closure-compiler.appspot.com/home" title="Google's Closure Compiler Service">Google's Closure Compiler Service</a>
+</li>
+<li>Updated the selectors used for the conventions. Text inputs are now found with "input:text", which should
+select all text inputs, even without a <code>type='text'</code> attribute (though this seems to be buggy in jQuery 
+v1.6.2)</li>
+<li>Significant internal restructuring of code</li>
+</ul><h3>v0.2.4</h3>
+
+<ul>
+<li>Data-bind will bind the model's value immediately instead of waiting for the model's value to change</li>
+<li>Support <code>enabled</code> functionality for data-bind: <code>data-bind="enabled isValid"</code>
+</li>
+<li>Documented existing support for data-bind <code>disabled</code>: <code>data-bind="disabled invalid"</code>
+</li>
+</ul><h3>v0.2.3</h3>
+
+<ul>
+<li>Fixes for 'falsey' value bindings</li>
+<li>Update the docs to include when and where to call the model bindings</li>
+</ul><h3>v0.2.2</h3>
+
+<ul>
+<li>Making some global vars not global</li>
+</ul><h3>v0.2.1</h3>
+
+<ul>
+<li>Configuration to easily set all binding attributes for all elements</li>
+<li>Fix for IE</li>
+<li>Making some global vars not global</li>
+</ul><h3>v0.1.0 - v0.2.0</h3>
+
+<ul>
+<li>Added data-bind convention</li>
+<li>Added configuration options</li>
+<li>Conventions for all form input types</li>
+<li>Removed formBinding code</li>
+<li>Removed htmlBinding code</li>
+<li>Significant internal code cleanup and restructuring</li>
+</ul><h1>Legal Mumbo Jumbo (MIT License)</h1>
+
+<p>Copyright (c) 2011 Derick Bailey, Muted Solutions, LLC</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.</p>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/oaprnd">oaprnd</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+    
+  </body>
+</html>
