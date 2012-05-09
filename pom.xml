@@ -1,14 +1,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<properties>
+		<site.url>https://github.com/oaprnd/backbone.modelbinding</site.url>
+		<license.url>https://raw.github.com/oaprnd/backbone.modelbinding/master/LICENSE.txt</license.url>
+	</properties>
 	
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.sarxos</groupId>
 	<artifactId>backbone-modelbinding</artifactId>
 	<version>0.5.1</version>
-	<packaging>war</packaging>
+	<packaging>pom</packaging>
 
-	<name>Backbone Modelbinding Plugin</name>
-	<url>https://github.com/oaprnd/backbone.modelbinding</url>
+	<name>Backbone.Modelbinding</name>
+	<description>This plugin provides a simple, convention based mechanism to create bi-directional binding between your Backbone models and your HTML elements, including form inputs, divs, spans, and so on.</description>
+	<url>${site.url}</url>
+
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>${license.url}</url>
+			<distribution>manual</distribution>
+		</license>
+	</licenses>
 
 	<organization>
 		<name>OAP RnD</name>
@@ -42,7 +56,7 @@
 			<plugin>
 				<groupId>com.github.searls</groupId>
 				<artifactId>jasmine-maven-plugin</artifactId>
-				<version>1.1.0</version>
+				<version>1.1.0.1-SNAPSHOT</version>
 				<executions>
 					<execution>
 						<id>jasmine</id>
@@ -69,7 +83,6 @@
 					<browserVersion>FIREFOX_3_6</browserVersion>
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<groupId>net.alchim31.maven</groupId>
 				<artifactId>yuicompressor-maven-plugin</artifactId>
@@ -90,6 +103,46 @@
 						<include>*.js</include>
 					</includes>
 					<failOnWarning>false</failOnWarning>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.5</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/javascript</directory>
+									<filtering>true</filtering>
+								</resource>
+								<resource>
+									<directory>${project.build.outputDirectory}</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.4.1</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${basedir}</directory>
+							<includes>
+								<include>*.js</include>
+							</includes>
+						</fileset>
+					</filesets>
 				</configuration>
 			</plugin>
 		</plugins>

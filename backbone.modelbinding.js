@@ -1,13 +1,13 @@
 /**
- * ${name} v${version}
+ * Backbone.Modelbinding v0.5.1
  *
- * ${description}
+ * This plugin provides a simple, convention based mechanism to create bi-directional binding between your Backbone models and your HTML elements, including form inputs, divs, spans, and so on.
  *
  * Documentation availabe at:
- * ${site.url}
+ * https://github.com/oaprnd/backbone.modelbinding
  *
  * Distributed Under MIT License:
- * ${license.url}
+ * https://raw.github.com/oaprnd/backbone.modelbinding/master/LICENSE.txt
  *
  * ----------------------------
  * Backbone.ModelBinding
