@@ -17,6 +17,7 @@ AView = Backbone.View.extend({
       <div id='pet' data-bind='someAttr pet' someAttr='Cat'></div>\
       <input type='text' id='super_hero_weakness' modelAttr='weakness'>\
       <input type='text' id='something'> \
+      <input type='text' id='something-skip'> \
       <div id='showIt'></div>\
       <input type='text' id='prefilled_name' value='a name'>\
       <input type='text' id='name'>\

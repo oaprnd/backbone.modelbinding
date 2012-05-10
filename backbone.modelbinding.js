@@ -14,12 +14,13 @@
  * ----------------------------
  */
 
-;
 (function (root) {
 
 	var modelbinding = (function (Backbone, _, $) {
+
 		var modelBinding = {
-			version: "0.5.0",
+
+			version: "0.5.1",
 
 			bind: function (view, options) {
 				view.modelBinder = new ModelBinder(view, options);
@@ -196,29 +197,63 @@
 			config.email = attribute;
 		};
 
-		// ----------------------------
-		// Text, Textarea, and Password Bi-Directional Binding Methods
-		// ----------------------------
+		/**
+		 * Get element type.
+		 *
+		 * @return string
+		 */
+		modelBinding._getElementType = function($element) {
+			var type = $element[0].tagName.toLowerCase();
+			if (type == "input") {
+				type = $element.attr("type");
+				if (type == undefined || type == '') {
+					type = 'text';
+				}
+			}
+			return type;
+		};
+
+		/**
+		 * Can we bind data to specific element. Attribute data-skip tell us that
+		 * this specific element should not be bind with model data.
+		 *
+		 * @param $element - element to check binding capabilities
+		 */
+		modelBinding.isBindAllowed = function($element, config) {
+			var type = modelBinding._getElementType($element);
+			var binding_attr = config.bindingAttrConfig[type];
+
+			// do not bind configured elements without binding attribute specified
+			if (typeof(binding_attr) !== 'undefined') {
+				if (typeof($element.attr(binding_attr)) === 'undefined') {
+					return false;
+				}
+			}
+
+			return typeof($element.attr('data-skip')) === 'undefined';
+		};
+
+		/**
+		 * Text, Textarea, and Password Bi-Directional Binding Methods
+		 */
 		var StandardBinding = (function (Backbone) {
 			var methods = {};
 
-			var _getElementType = function (element) {
-					var type = element[0].tagName.toLowerCase();
-					if (type == "input") {
-						type = element.attr("type");
-						if (type == undefined || type == '') {
-							type = 'text';
-						}
-					}
-					return type;
-				};
-
 			methods.bind = function (selector, view, model, config) {
+
 				var modelBinder = this;
 
 				view.$(selector).each(function (index) {
+
 					var element = view.$(this);
-					var elementType = _getElementType(element);
+
+					// return if binding is not allowed for this element - binding is allowed
+					// if element does not contain data-skip attribute
+					if (!modelBinding.isBindAllowed(element, config)) {
+						return;
+					}
+
+					var elementType = modelBinding._getElementType(element);
 					var attribute_name = config.getBindingValue(element, elementType);
 
 					var modelChange = function (changed_model, val) {
@@ -264,7 +299,15 @@
 				var modelBinder = this;
 
 				view.$(selector).each(function (index) {
+
 					var element = view.$(this);
+
+					// return if binding is not allowed for this element - binding is allowed
+					// if element does not contain data-skip attribute
+					if (!modelBinding.isBindAllowed(element, config)) {
+						return;
+					}
+
 					var attribute_name = config.getBindingValue(element, 'select');
 
 					var modelChange = function (changed_model, val) {
@@ -317,7 +360,14 @@
 
 				var foundElements = [];
 				view.$(selector).each(function (index) {
+
 					var element = view.$(this);
+
+					// return if binding is not allowed for this element - binding is allowed
+					// if element does not contain data-skip attribute
+					if (!modelBinding.isBindAllowed(element, config)) {
+						return;
+					}
 
 					var group_name = config.getBindingValue(element, 'radio');
 					if (!foundElements[group_name]) {
@@ -380,6 +430,13 @@
 				view.$(selector).each(function (index) {
 
 					var element = view.$(this);
+
+					// return if binding is not allowed for this element - binding is allowed
+					// if element does not contain data-skip attribute
+					if (!modelBinding.isBindAllowed(element, config)) {
+						return;
+					}
+
 					var bindingAttr = config.getBindingAttr('checkbox');
 
 					// The name of the element in the DOM (ie 'foo[]')
@@ -557,7 +614,15 @@
 				var modelBinder = this;
 
 				view.$(selector).each(function (index) {
+
 					var element = view.$(this);
+
+					// return if binding is not allowed for this element - binding is allowed
+					// if element does not contain data-skip attribute
+					if (!modelBinding.isBindAllowed(element, config)) {
+						return;
+					}
+
 					var databindList = splitBindingAttr(element);
 
 					_.each(databindList, function (databind) {
@@ -676,7 +741,7 @@
 		});
 	} else {
 		// No AMD, use Backbone namespace
-		root.Backbone = Backbone || {};
+		root.Backbone = Backbone || { };
 		root.Backbone.ModelBinding = modelbinding(Backbone, _, jQuery);
 	}
 
