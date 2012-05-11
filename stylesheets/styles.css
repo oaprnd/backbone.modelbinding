@@ -581,7 +581,7 @@ blockquote {
   font-style: italic;
 }
 
-code {
+pre > code {
   font-family: "Lucida Sans", Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal;
   font-size: 13px;
   color: #efefef;
@@ -595,6 +595,19 @@ code {
   -ms-border-radius: 2px;
   -khtml-border-radius: 2px;
   border-radius: 2px;
+}
+
+p > code {
+  	background: none repeat scroll 0 0 #FFFFCC;
+    border-color: #999999;
+    border-radius: 2px 2px 2px 2px;
+    border-style: dotted;
+    border-width: 1px;
+    color: #333333;
+    font-family: "Lucida Sans",Monaco,Bitstream Vera Sans Mono,Lucida Console,Terminal;
+    font-size: 75%;
+    padding-left: 3px;
+    padding-right: 3px;
 }
 
 pre {

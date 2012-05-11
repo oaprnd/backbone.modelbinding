@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="javascripts/main.js"></script>
+    <script src="examples/google-code-prettify/prettify.js"></script>
+    <link rel="stylesheet" href="examples/google-code-prettify/sons-of-obsidian.css">
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -70,18 +72,63 @@ user experience.</p>
 <a href="https://github.com/derickbailey">Derick Bailey</a> was abandoned on 4/22/12. This 
 project is a continuation</p>
 
+
+
+
+
+
+
+
+
+
+
+
+
 <h2>Getting Started</h2>
 
-<p>It's easy to get up and running. You only need to have Backbone (including underscore.js - 
+<p>
+It's easy to get up and running. You only need to have Backbone (including underscore.js - 
 a requirement for Backbone) and jQuery in your page before including the backbone.modelbinding
-plugin.</p>
+plugin.
+</p>
 
-<h3>Building Project on your local PC</h3>
+<h3>Prerequisites:</h3>
 
+<ul>
+<li>jQuery</li>
+<li>Underscore.js</li>
+<li>Backbone.js</li>
+</ul>
+
+Now all you have to do is to put them together with <code>backbone.modelbinding.js</code> and write
+your HTMN / JavaScript code:
+
+<pre><code>&lt;html&gt;
+  &lt;head&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot; src=&quot;js/underscore.js&quot;&gt;&lt;/script&gt;	
+    &lt;script type=&quot;text/javascript&quot; src=&quot;js/backbone.js&quot;&gt;&lt;/script&gt;	
+    &lt;script type=&quot;text/javascript&quot; src=&quot;js/backbone.modelbinding.js&quot;&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;-- here goes your HTML / JavaScript code --&gt;  
+  &lt;/bode&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>Download the <code>backbone.modelbinding.js</code> or its <i>minified</i> version and copy it into 
+your javascripts folder. Add the needed <code>&lt;script&gt;</code> tag to bring the plugin into any page
+that wishes to use it. Be sure to include the modelbinding file <u><em>after</em></u> the backbone.js file.</p>
+
+
+<h2>Building On Local PC</h2>
+
+<p>
 This section is applicable only to the ones who would like to be involved in Backbone.Modelbinding
 plugin development. If you do not want to change Backbone.Modelbinding source you can skip this section.
+</p>
 
-<p>Prerequisites:</p>
+<h3>Prerequisites:</h3>
 
 <ul>
 <li>JDK 1.6 installed</li>
@@ -102,22 +149,30 @@ generated while the build, so if you want to edit source file you should change 
        \_ backbone.modelbinding.js
 </code></pre>
 
-<h3>Prerequisites</h3>
+<h1>Examples</h1>
 
+<p>This chapter contains few Backbone.Modelbinding usage examples.</p>
+ 
+<h2>Basic</h2>
+
+<p>
+Below you can find links to demos showing basic usage of Backbone.Modelbinding capabilities:
 <ul>
-<li>Backbone.js v0.9.0</li>
-<li>Underscore.js v1.3.1</li>
-<li>jQuery v1.7.1</li>
+<li><a href="examples/basic.html" target="_blank">Simple binding for various input elements</a></li>
 </ul>
 
-<p>This is a plugin for Backbone.js and is built and tested against these versions of these
-libraries. At this point, I make no guarantees of it working with any version of Backbone or jQuery.</p>
+</p>
 
-<h3>Get The ModelBinding Plugin</h3>
 
-<p>Download the <code>backbone.modelbinding.js</code> file from this github repository and copy it into 
-your javascripts folder. Add the needed <code>&lt;script&gt;</code> tag to bring the plugin into any page
-that wishes to use it. Be sure to include the modelbinding file <em>after</em> the backbone.js file.</p>
+<h2>Advanced</h2>
+<p>
+And some goodies for advanced users (not ready yet):
+<ul>
+<li><a target="_blank">(not ready yet)</a></li>
+</ul>
+</p>
+
+<h1>Description</h1>
 
 <h3>Model Binding</h3>
 
@@ -893,8 +948,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.</p>
       </section>
       <footer>
-        <p>Project maintained by <a href="https://github.com/oaprnd">oaprnd</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+        <p>Maintained by <a href="https://github.com/oaprnd">OAP R&D</a></p>
       </footer>
     </div>
     <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
