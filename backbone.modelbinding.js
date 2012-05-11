@@ -555,6 +555,9 @@
 				case "enabled":
 					element.attr('disabled', !val);
 					break;
+				case "disabled":
+					element.attr('disabled', !!val);
+					break;
 				case "displayed":
 					element.css('display', val ? 'block' : 'none');
 					break;
