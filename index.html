@@ -311,6 +311,14 @@ and specify what should be updated with which model property using an <code>elem
 format. For example <code>data-bind="text name"</code> will update text node of any DOM element with the
 model's name property, when the model's name changes.</p>
 
+<h4>NOTE!</h4>
+
+<p>
+Data binding with <code>data-bind</code> is <b>uni-directional</b>. DOM element is being updated if and only 
+if model has been changed, not vice versa. When you change element attribute, your model's attributes will 
+remain the same as they were before the change.
+</p>
+
 <pre class="prettyprint prettyprinted language-html linenums">&lt;body&gt;
 	&lt;form&gt;
 		&lt;input type="text" id="name"&gt;
