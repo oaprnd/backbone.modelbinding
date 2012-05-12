@@ -499,47 +499,49 @@ valid.</p>
 <p>This allows you to specify that an element should be shown or hidden by setting the css
 of the element according to the value of the model properties specified.</p>
 
-<pre><code>&lt;div data-bind="displayed isValid" /&gt;
+<pre class="prettyprint prettyprinted language-html linenums">
+&lt;div data-bind="displayed isValid" /&gt;
+</pre>
 
-someModel.set({isValid: false});
-</code></pre>
+<pre class="prettyprint prettyprinted language-js linenums">
+model.set({ isValid : false });
+</pre>
 
-<p>When the model's property is set to false, the HTML element's <code>display</code> css will be set
-to <code>none</code>. When the model's property is set to true, the HTML element's <code>display</code> css
+<p>When the model's property is set to <code>false</code>, the HTML element's <code>display</code> css will be set
+to <code>none</code>. When the model's property is set to <code>true</code>, the HTML element's <code>display</code> css
 will be set to <code>block</code>.</p>
+
 
 <h4>hidden</h4>
 
-<p>This is the inverse of <code>displayed</code>.</p>
+<p>This is the inverse of <code>displayed</code> convention.</p>
 
-<pre><code>&lt;div data-bind="hidden isValid" /&gt;
+<pre class="prettyprint prettyprinted language-html linenums">
+&lt;div data-bind="hidden isValid" /&gt;
+</pre>
+<pre class="prettyprint prettyprinted language-js linenums">
+model.set({ isValid : true });
+</pre>
 
-someModel.set({isValid: true});
-</code></pre>
-
-<p>When the model's property is set to false, the HTML element's <code>display</code> css will be set
-to <code>block</code>. When the model's property is set to true, the HTML element's <code>display</code> css
+<p>When the model's property is set to <code>false</code>, the HTML element's <code>display</code> css will be set
+to <code>block</code>. When the model's property is set to <code>true</code>, the HTML element's <code>display</code> css
 will be set to <code>none</code>.</p>
 
-<h3>Data-Bind To Any Model Event</h3>
+<h3>Model Events data-bind</h3>
 
 <p>In addition to binding model attributes, you can use the data-bind functionality to
 bind to any arbitrary event that the model fires. This is done with the syntax:</p>
 
-<div class="highlight">
-<pre><span class="nt">&lt;div</span> <span class="na">data-bind=</span><span class="s">"text event:foo"</span><span class="nt">&gt;&lt;/div&gt;</span>
+<pre class="prettyprint prettyprinted language-html linenums">
+&lt;div data-bind="text event:foo" /&gt;
 </pre>
-</div>
 
-
-<p>where <code>foo</code> is the event that is triggered from the model. The first parameter
+<p>Where <code>foo</code> is the event that is triggered from the model. The first parameter
 of the event will be used as the data for the element.</p>
 
-<div class="highlight">
-<pre><span class="nx">model</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">"foo"</span><span class="p">,</span> <span class="s2">"bar"</span><span class="p">);</span>
+<pre class="prettyprint prettyprinted language-js linenums">
+model.trigger('foo', 'bar');
 </pre>
-</div>
-
 
 <p>This will cause the above data-binding to produce <code>&lt;div&gt;bar&lt;/div&gt;</code>.</p>
 
@@ -548,28 +550,34 @@ of the event will be used as the data for the element.</p>
 <p>If a model's property is <code>unset</code>, the data-bind may not update correctly when using <code>text</code> or <code>html</code>
 as the bound attribute of the element.</p>
 
-<pre><code>&lt;div data-bind="text something"&gt;&lt;/div&gt;
-
-model.set({something: "whatever"});
+<pre class="prettyprint prettyprinted language-html linenums">
+&lt;div data-bind="text something"&gt;&lt;/div&gt;
+</pre>
+<pre class="prettyprint prettyprinted language-js linenums">
+// set something attribute
+model.set({ something : "whatever" });
+// unset something attribute
 model.unset("something");
-</code></pre>
+</pre>
 
-<p>The result will be a div with it's text set to "". this is handled through the data-bind's 
+<p>The result will be a div with it's text set to "". This is handled through the data-bind's 
 substitutions for undefined values. The default substitution is to replace an undefined
 value with an empty string. However, this can be per attribute:</p>
 
-<pre><code>&lt;div data-bind="text something"&gt;&lt;/div&gt;
+<pre class="prettyprint prettyprinted language-html linenums">
+&lt;div data-bind="text something"&gt;&lt;/div&gt;
 &lt;div data-bind="html something"&gt;&lt;/div&gt;
-
+</pre>
+<pre class="prettyprint prettyprinted language-js linenums">
 Backbone.ModelBinding.Configuration.dataBindSubst({
-  text: "undefined. setting text to this",
-  html: "&amp;nbsp;"
+	text : "undefined. setting text to this",
+	html : "&amp;nbsp;"
 });
-model.set({something: "whatever"});
+model.set({ something : "whatever" });
 model.unset("something");
-</code></pre>
+</pre>
 
-<p>The result of this example will be a div that displays "undefined. setting the text to this" and a
+<p>The result of this example will be a <code>&lt;div&gt;</code> that displays <em>"undefined. setting the text to this"</em> and a
 div whose contents is a single space, instead of being empty.</p>
 
 <h2>Form Binding Conventions</h2>
@@ -583,87 +591,88 @@ div whose contents is a single space, instead of being empty.</p>
 <li>checkbox</li>
 <li>select </li>
 <li>radio button groups</li>
-</ul><p>HTML5</p>
+<li>complete HTML5 set</li>
+</ul>
 
-<ul>
-<li>number</li>
-<li>range</li>
-<li>email</li>
-<li>url</li>
-<li>tel</li>
-<li>search</li>
-</ul><p>Radio buttons are group are assumed to be grouped by the <code>name</code> attribute of the 
-radio button items. </p>
+<p>Radio buttons are group are assumed to be grouped by the <code>name</code> attribute of the 
+radio button items.</p>
 
 <p>Select boxes will populate 2 separate fields into the model that they are bound to.
 The standard <code>#fieldid</code> will be populated with the selected value. An additional
 <code>{#fieldid}_text</code> will be populated with the text from the selected item. For example,
 a selected option of </p>
 
-<pre><code>&lt;select id='company'&gt;
+<pre class="prettyprint prettyprinted language-html linenums">
+&lt;select id='company'&gt;
   &lt;option value="foo_bar"&gt;Foo Bar Widgets, Inc.&lt;/option&gt;
+  &lt;option value="bubu"&gt;Bubu Ltd.&lt;/option&gt;
   ...
 &lt;/select&gt;
-</code></pre>
+</pre>
 
-<p>will populate the <code>company</code> property of the model with "foo_bar", and will populate
+<p>Will populate the <code>company</code> property of the model with "foo_bar", and will populate
 the <code>company_text</code> property of the model with "Foo Bar Widgets, Inc."</p>
 
-<p>There is no support for hidden fields at the moment, because there is no 'change' event
-that jQuery can listen to on a hidden field.</p>
-
-<h3>Configuring The Bound Attributes</h3>
+<h3>Configuring Bound Attributes</h3>
 
 <p>The convention binding system allows you to specify the attribute to use for the convention, by
 the input type. The default configuration is:</p>
 
-<pre><code>{
-  text: "id",
-  textarea: "id",
-  password: "id",
-  radio: "name",
-  checkbox: "id",
-  select: "id"
+<pre class="prettyprint prettyprinted language-js linenums">
+{
+	text : "id",
+	textarea : "id",
+	password : "id",
+	radio : "name",
+	checkbox : "id",
+	select : "id"
 }
-</code></pre>
+</pre>
 
 <p>You can override this configuration and use any attribute you wish, by specifying any or all of
-these input types when you call the model binding. This is useful when you have field ids that
-do not match directly to the model properties. </p>
+these input types when you call the model binding. This is useful when you have field IDs that
+do not match directly to the model properties or when you have many elements and each has to have same
+binding attribute which can be impossible in ID case.</p>
 
 <h4>Override All Element Binding Attributes</h4>
 
 <p>The following will use use the <code>class</code> attribute's value as the binding for all input field:</p>
 
-<pre><code>SomeView = Backbone.View.extend({
-  render: function(){
-    // ... some rendering here
-    Backbone.ModelBinding.bind(this, { all: "class" });
-  }
+<pre class="prettyprint prettyprinted language-js linenums">
+var SomeView = Backbone.View.extend({
+	render: function(){
+		// some rendering here
+		Backbone.ModelBinding.bind(this, { all: "class" });
+	}
 });
+</pre>
 
+<pre class="prettyprint prettyprinted language-html linenums">
 &lt;input type="text" id="the_model_name" class="name"&gt;
-</code></pre>
+</pre>
 
 <p>If the same convention needs to be used throughout an application, and not just withing a single
 view, the configuration can be set at a global level:</p>
 
-<pre><code>Backbone.ModelBinding.Configuration.configureAllBindingAttributes("class");
-</code></pre>
+<pre class="prettyprint prettyprinted language-js linenums">
+Backbone.ModelBinding.Configuration.configureAllBindingAttributes("class");
+</pre>
 
 <h4>Override Individual Element Binding Attributes</h4>
 
 <p>The following will use a <code>modelAttr</code> attribute value as the convention for text boxes, only.</p>
 
-<pre><code>SomeView = Backbone.View.extend({
-  render: function(){
-    // ... some rendering here
-    Backbone.ModelBinding.bind(this, { text: "modelAttr" });
-  }
+<pre class="prettyprint prettyprinted language-js linenums">
+var SomeView = Backbone.View.extend({
+	render: function(){
+		// some rendering here
+		Backbone.ModelBinding.bind(this, { text: "modelAttr" });
+	}
 });
-
+</pre>
+<pre class="prettyprint prettyprinted language-html linenums">
 &lt;input type="text" id="the_model_name" modelAttr="name"&gt;
-</code></pre>
+</pre>
 
 <p>When this text box has it's value changed, the model's <code>name</code> property will be populated with
 the value instead of <code>the_model_name</code>.</p>
@@ -671,8 +680,9 @@ the value instead of <code>the_model_name</code>.</p>
 <p>If the same convention needs to be used throughout an application, and not just withing a single
 view, the configuration can be set at a global level:</p>
 
-<pre><code>Backbone.ModelBinding.Configuration.configureBindingAttributes({text: "modelAttr"});
-</code></pre>
+<pre class="prettyprint prettyprinted language-js linenums">
+Backbone.ModelBinding.Configuration.configureBindingAttributes({ text : "modelAttr" });
+</pre>
 
 <p>Now all text boxes will update the model property specified in the text box's <code>modelAttr</code>.</p>
 
@@ -691,32 +701,32 @@ the model being bound.</p>
 <p>You can replace the handler of an existing convention. For example, this will set the
 value of a textbox called <code>#name</code> to some text, instead of doing any real binding.</p>
 
-<pre><code>var nameSettingsHandler = {
-  bind: function(selector, view, model){
-    view.$("#name").val("a custom convention supplied this name");
-  }
+<pre class="prettyprint prettyprinted language-js linenums">
+var nameSettingsHandler = {
+	bind: function(selector, view, model){
+		view.$("#name").val("a custom convention supplied this name");
+	}
 };
-
 Backbone.ModelBinding.Conventions.text.handler = nameSettingsHandler;
-</code></pre>
+</pre>
 
 <p>You can also create your own conventions that do just about anything you want. Here's an example
 that modifies the contents of <code>&lt;p&gt;</code> tags:</p>
 
-<pre><code>var PConvention = {
-  selector: "p",
-  handler: {
-    bind: function(selector, view, model){
-      view.$(selector).each(function(index){
-        var name = model.get("name");
-        $(this).html(name);
-      });
-    }
-  }
+<pre class="prettyprint prettyprinted language-js linenums">
+var PConvention = {
+	selector : "p",
+	handler : {
+		bind: function(selector, view, model) {
+			view.$(selector).each(function(index) {
+				var name = model.get("name");
+				$(this).html(name);
+			});
+		}
+	}
 };
-
 Backbone.ModelBinding.Conventions.paragraphs = PConvention;
-</code></pre>
+</pre>
 
 <p>This example will find all <code>&lt;p&gt;</code> tags in the view and render the <code>name</code> property from the model
 into that paragraph, replacing all other text. Note that the name of the convention is set to
@@ -743,7 +753,7 @@ convention.</p>
 </ul><p>For fully functional, bi-directional binding convention examples, check out the source code
 to Backbone.ModelBinding in the <code>backbone.modelbinding.js</code> file.</p>
 
-<h2>Using Backbone.Modelbinding as an AMD module (require.js)</h2>
+<h2>AMD Module</h2>
 
 <p>Backbone.Modelbinding detects an AMD loader like require.js and registrers as a module named 'modelbinding' if so.</p>
 
@@ -758,45 +768,47 @@ to Backbone.ModelBinding in the <code>backbone.modelbinding.js</code> file.</p>
 <p>Module names must be 'jquery', 'underscore', and 'backbone' which is done easily by naming files as jquery.js, underscore.js and backbone.js placed
 in the same folder as require.js. Or by settings up require.js alias configure like</p>
 
-<pre><code>require.config({
-  paths: {
-  // AMD modules
-    jquery:       'libs/jquery/1.7.1/jquery',
-    underscore:   'libs/underscore/1.2.3/underscore',
-    backbone:     'libs/backbone/0.5.3-optamd3/backbone',
-    modelbinding: 'libs/backbone/modelbinding/0.4.1-amd/backbone.modelbinding'
-  }
+<pre class="prettyprint prettyprinted language-js linenums">
+require.config({
+	paths: {
+		// AMD modules
+		jquery:       'libs/jquery/1.7.1/jquery',
+		underscore:   'libs/underscore/1.2.3/underscore',
+		backbone:     'libs/backbone/0.5.3-optamd3/backbone',
+		modelbinding: 'libs/backbone/modelbinding/0.4.1-amd/backbone.modelbinding'
+	}
 });
-</code></pre>
+</pre>
 
 <h3>Short Example</h3>
 
 <p>Load require.js as normal:</p>
 
-<pre><code>&lt;script type="text/javascript" src="js/require.js"&gt;&lt;/script&gt;
-</code></pre>
+<pre class="prettyprint prettyprinted language-html linenums">
+&lt;script type="text/javascript" src="js/require.js"&gt;&lt;/script&gt;
+</pre>
 
 <p>Hereafter require.js will take care of loading AMD module dependencies and you can use Backbone and Modelbinding
 as you are used to:</p>
 
-<pre><code>&lt;script type="text/javascript"&gt;
-  require ([
-    'jquery','underscore','backbone','modelbinding'
-  ], function ($, _, Backbone, Modelbinding ) {
-    ...
-    SomeView = Backbone.View.extend({
-      render: function(){
-        // ... render your form here
-        $(this.el).html("... some html and content goes here ... ");
-
-        // execute the model bindings
-        ModelBinding.bind(this);
-      }
-    });
-    ...
-  });
+<pre class="prettyprint prettyprinted language-html linenums">
+&lt;script type="text/javascript"&gt;
+	require ([
+		'jquery','underscore','backbone','modelbinding'
+	], function ($, _, Backbone, Modelbinding ) {
+		...
+		var SomeView = Backbone.View.extend({
+			render: function(){
+			// ... render your form here
+			$(this.el).html("... some html and content goes here ... ");
+			// execute the model bindings
+			ModelBinding.bind(this);
+		}
+	});
+	...
+});
 &lt;/script&gt;
-</code></pre>
+</pre>
 
 <h3>Migrating to AMD</h3>
 
@@ -804,26 +816,26 @@ as you are used to:</p>
 by assigning the module to the namespace, optionally using require.js itself as an module. 
 When above example would be:</p>
 
-<pre><code>&lt;script type="text/javascript"&gt;
-  require ([
-    'require','jquery','underscore','backbone'
-  ], function (require, $, _, Backbone ) {
-    // use require.js to load modelbinding and assign to Backbone namespace:
-    Backbone.Modelbinding = require('modelbinding');
-    ...
-    SomeView = Backbone.View.extend({
-      render: function(){
-        // ... render your form here
-        $(this.el).html("... some html and content goes here ... ");
-
-        // execute the model bindings
-        Backbone.ModelBinding.bind(this);
+<pre class="prettyprint prettyprinted language-html linenums">
+&lt;script type="text/javascript"&gt;
+	require ([
+		'require','jquery','underscore','backbone'
+	], function (require, $, _, Backbone ) {
+		// use require.js to load modelbinding and assign to Backbone namespace:
+		Backbone.Modelbinding = require('modelbinding');
+		...
+		var SomeView = Backbone.View.extend({
+			render: function(){
+			// ... render your form here
+			$(this.el).html("... some html and content goes here ... ");
+			// execute the model bindings
+			Backbone.ModelBinding.bind(this);
       }
     });
     ...
   });
 &lt;/script&gt;
-</code></pre>
+</pre>
 
 
 
@@ -887,6 +899,7 @@ Please note that <code>backbone.modelbinding.js</code> and <code>backbone.modelb
 <li>Significant checkstyle fixes</li>
 <li>Add support for <code>data-skip</code> attribute</li>
 <li>Add <code>disabled</code> data binding option</li>
+<li>Add hidden field binding</li>
 </ul>
 
 <h3>v0.5.0</h3>
