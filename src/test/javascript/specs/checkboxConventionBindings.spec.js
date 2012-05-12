@@ -55,22 +55,22 @@ describe("checkbox convention bindings", function(){
 		});
 
 		it("bind addition to the model's field", function() {
-			var el = this.view.$("#endorsements\\[\\][value=class_c]");
-			el.attr("checked", true);
+			var el = this.view.$("input[name='end'][value='class_c']");
+			el.attr("checked", 'checked');
 			el.trigger('change');
 			expect(this.model.get('endorsements')).toContain('class_c');
 		});
 
 		it("bind removal to the model's field", function() {
 			expect(this.model.get('endorsements')).toContain('class_a');
-			var el = this.view.$("#endorsements\\[\\][value=class_a]");
+			var el = this.view.$("input[name='end'][value='class_a']");
 			el.removeAttr("checked");
 			el.trigger('change');
 			expect(this.model.get('endorsements')).not.toContain('class_a');
 		});
 
 		it("bind model field changes to the form input", function() {
-			var el = this.view.$("#endorsements\\[\\][value=class_a]");
+			var el = this.view.$("input[name='end']['value=class_a']");
 
 			// uncheck it
 			this.model.set({ endorsements : [ 'class_b' ] });
@@ -84,7 +84,7 @@ describe("checkbox convention bindings", function(){
 		});
 
 		it("unchecks the box for a falsy value, on render", function() {
-			var el = this.view.$("#endorsements\\[\\][value=class_c]");
+			var el = this.view.$("input[name='end'][value='class_c']");
 			var selected = el.attr("checked");
 			expect(selected).toBeFalsy();
 		});
