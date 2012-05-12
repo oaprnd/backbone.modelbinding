@@ -5,6 +5,7 @@ describe("checkbox convention bindings", function(){
       this.model = new AModel({
         drivers_license: true,
         motorcycle_license: false,
+        endorsements: ['class_a', 'class_b']
       });
       this.view = new AView({model: this.model});
       this.view.render();
@@ -45,6 +46,49 @@ describe("checkbox convention bindings", function(){
       expect(selected).toBeFalsy();
     });
   });
+
+	  describe("when binding an array to a checkbox", function() {
+		beforeEach(function() {
+			this.model = new AModel({ endorsements : [ 'class_a', 'class_b' ] });
+			this.view = new AView({ model : this.model });
+			this.view.render();
+		});
+
+		it("bind addition to the model's field", function() {
+			var el = this.view.$("#endorsements\\[\\][value=class_c]");
+			el.attr("checked", true);
+			el.trigger('change');
+			expect(this.model.get('endorsements')).toContain('class_c');
+		});
+
+		it("bind removal to the model's field", function() {
+			expect(this.model.get('endorsements')).toContain('class_a');
+			var el = this.view.$("#endorsements\\[\\][value=class_a]");
+			el.removeAttr("checked");
+			el.trigger('change');
+			expect(this.model.get('endorsements')).not.toContain('class_a');
+		});
+
+		it("bind model field changes to the form input", function() {
+			var el = this.view.$("#endorsements\\[\\][value=class_a]");
+
+			// uncheck it
+			this.model.set({ endorsements : [ 'class_b' ] });
+			var selected = el.attr("checked");
+			expect(selected).toBeFalsy();
+
+			// then check it
+			this.model.set({ endorsements : [ 'class_a' ] });
+			var selected = el.attr("checked");
+			expect(selected).toBeTruthy();
+		});
+
+		it("unchecks the box for a falsy value, on render", function() {
+			var el = this.view.$("#endorsements\\[\\][value=class_c]");
+			var selected = el.attr("checked");
+			expect(selected).toBeFalsy();
+		});
+	});
 
   describe("when binding a 1 to a checkbox", function(){
     beforeEach(function(){
