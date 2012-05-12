@@ -236,6 +236,11 @@ samp {
   font-size: 1em;
 }
 
+pre.prettyprint {
+	font-size: 12px;
+	line-height: 1em;
+}
+
 /*
  * 1. Addresses CSS quotes not supported in IE6/7
  * 2. Addresses quote property not supported in S4

@@ -13,13 +13,7 @@
 <body>
 
 <h2>Brief Description:</h2>
-This example show basic bi-directional binding for several input elements. What is worth to mention here 
-in this example:
-<ul>
-<li>Input ID / name need to match model attribute name</li>
-<li>Backbone.ModelBinding.bind(..) function has to be called to bind model data with view</li>
-<li>Checkbox binding will always convert value to boolean</li>
-</ul>
+This example show how to create uni-directional data biding with <code>data-bind</code> attribute.
 
 <h2>Demo:</h2>
 
@@ -38,23 +32,12 @@ in this example:
 <div id="html-snippet">
 <div id='my-view'>
 	<div>Something:<br> <input id="something" /></div>
-	<div>Person:<br> <input id="person" /></div>
 	<div>Name:<br> <input id="name" /></div>
-	<div>Selected:<br> <input type='checkbox' id="selected" /></div>
-	<div>Radios:<br>
-		<!-- for radios name attribute have to be used instead of ID -->
-		<input type='radio' name="choice" value="1" />
-		<input type='radio' name="choice" value="2" />
-		<input type='radio' name="choice" value="3" />
-		<input type='radio' name="choice" value="4" />
-		<input type='radio' name="choice" value="5" />
-	</div>
-	<div>Options:<br>
-		<input type='checkbox' id="options[]" value="1" />
-		<input type='checkbox' id="options[]" value="2" />
-		<input type='checkbox' id="options[]" value="3" />
-		<input type='checkbox' id="options[]" value="4" />
-	</div>
+	<div>Text:<br> <textarea id="code">&lt;b&gt;bold&lt;/b&gt;</textarea></div>
+	<hr>
+	<div>Something is: <b data-bind='text something'></b></div>
+	<div>Name is: <span data-bind='text name'></span></div>
+	<div>Text is: <span data-bind='html code'></span></div>
 </div>
 </div>
 
@@ -68,12 +51,7 @@ in this example:
 var MyModel = Backbone.Model.extend({
 
 	defaults : {
-		something : "abcd",
-		person : "Bobek Nierob",
-		name : "John",
-		selected : false,
-		choice : '2',
-		options : ["1", "3"] 
+		something : "abcd"
 	}
 
 });

@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Backbone.Modelbinding by oaprnd</title>
+    <title>Backbone.ModelBinding by OAP R&D</title>
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="javascripts/main.js"></script>
     <script src="examples/google-code-prettify/prettify.js"></script>
-    <link rel="stylesheet" href="examples/google-code-prettify/sons-of-obsidian.css">
+    <link rel="stylesheet" href="examples/google-code-prettify/sons-of-obsidian-2.css">
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -19,7 +19,7 @@
   <body>
 
       <header>
-        <h1>Backbone.Modelbinding</h1>
+        <h1>Backbone.ModelBinding</h1>
         <p>backbone.js model binding plugin</p>
       </header>
 
@@ -100,10 +100,13 @@ plugin.
 <li>Backbone.js</li>
 </ul>
 
-Now all you have to do is to put them together with <code>backbone.modelbinding.js</code> and write
-your HTMN / JavaScript code:
+<p>
+Now all you have to do is to put them in <code>&lt;head&gt;</code> together with 
+<code>backbone.modelbinding.js</code> (be sure to include it 
+<u><em>after</em></u> the <code>backbone.js</code> file):
+</p>
 
-<pre><code>&lt;html&gt;
+<pre class='prettyprint prettyprinted language-html linenums'>&lt;html&gt;
   &lt;head&gt;
     &lt;script type=&quot;text/javascript&quot; src=&quot;js/jquery.js&quot;&gt;&lt;/script&gt;
     &lt;script type=&quot;text/javascript&quot; src=&quot;js/underscore.js&quot;&gt;&lt;/script&gt;	
@@ -114,63 +117,49 @@ your HTMN / JavaScript code:
     &lt;-- here goes your HTML / JavaScript code --&gt;  
   &lt;/bode&gt;
 &lt;/html&gt;
-</code></pre>
-
-<p>Download the <code>backbone.modelbinding.js</code> or its <i>minified</i> version and copy it into 
-your javascripts folder. Add the needed <code>&lt;script&gt;</code> tag to bring the plugin into any page
-that wishes to use it. Be sure to include the modelbinding file <u><em>after</em></u> the backbone.js file.</p>
+</pre>
 
 
-<h2>Building On Local PC</h2>
 
-<p>
-This section is applicable only to the ones who would like to be involved in Backbone.Modelbinding
-plugin development. If you do not want to change Backbone.Modelbinding source you can skip this section.
+
+
+
+
+
+
+
+
+
+<h2>Examples</h2>
+
+<p>This chapter contains few working Backbone.Modelbinding usage examples. Each example contains HTML and JavaScript
+code together with some brief description. For additional comments, questions or issues please create new <em>issue</em>
+on <a href="https://github.com/oaprnd/backbone.modelbinding/issues">GitHub project page</a>. If you found a bug in the 
+code you can always send us <em>pull request</em> :)
 </p>
-
-<h3>Prerequisites:</h3>
-
-<ul>
-<li>JDK 1.6 installed</li>
-<li>Maven installed and available in PATH</li>
-</ul>
-
-<p>Download project to your local repo:</p>
-
-<pre><code>$ git clone git://github.com/oaprnd/backbone.modelbinding.git
-</code></pre>
-
-<p>Please note that <code>backbone.modelbinding.js</code> and <code>backbone.modelbinding.min.js</code> in the root directory are
-generated while the build, so if you want to edit source file you should change this one:</p>
-
-<pre><code>src
- \_ main
-    \_ javascript
-       \_ backbone.modelbinding.js
-</code></pre>
-
-<h1>Examples</h1>
-
-<p>This chapter contains few Backbone.Modelbinding usage examples.</p>
  
-<h2>Basic</h2>
-
 <p>
 Below you can find links to demos showing basic usage of Backbone.Modelbinding capabilities:
 <ul>
-<li><a href="examples/basic.html" target="_blank">Simple binding for various input elements</a></li>
-</ul>
-
-</p>
-
-
-<h2>Advanced</h2>
-<p>
-And some goodies for advanced users (not ready yet):
-<ul>
-<li><a target="_blank">(not ready yet)</a></li>
+<li><a href="examples/basic.html" target="_blank">Default bi-directional input elements binding</a></li>
+<li><a href="examples/basic2.html" target="_blank">Uni-directional data binding with data-bind attribute</a></li>
 </ul>
 </p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <h1>Description</h1>
 
@@ -181,151 +170,166 @@ several places that it can be called from, depending on your circumstances.</p>
 
 <p>All of the element binding happens within the context of the view's <code>el</code>, therefore you must
 call the model binding code after your view's <code>el</code> has been populated with the elements that
-will be bound to.</p>
+will be bound to (what actually means that your view has been already rendered, but not necessarly attached to DOM).</p>
 
-<h4>Binding After Rendering</h4>
+<h4>Rendering View Binding</h4>
 
 <p>If your view modifies the html contents of the view's <code>el</code> in the <code>render</code> method, you should 
-call the model binding after the modifications are made:</p>
+call the model binding after the modifications are made, e.g.:</p>
 
-<pre><code>SomeView = Backbone.View.extend({
-  render: function(){
-    // ... render your form here
-    $(this.el).html("... some html and content goes here ... ");
-
-    // execute the model bindings
-    Backbone.ModelBinding.bind(this);
-  }
+<pre class="prettyprint prettyprinted language-html linenums">&lt;body&gt;
+	&lt;div id=&quot;my-view&quot;&gt;&lt;/div&gt;
+&lt;/body&gt;
+</pre>
+<pre class="prettyprint prettyprinted language-js linenums">var SomeView = Backbone.View.extend({
+	el: '#my-view',
+	render: function() {
+		$(this.el).html("Name: &lt;input id='name' /&gt;");
+		Backbone.ModelBinding.bind(this);
+	}
 });
-</code></pre>
+</pre>
 
-<h4>Binding A View That Does Not Render</h4>
+<h4>Activating View Binding</h4>
 
-<p>If, however, your view has an <code>el</code> that represents an existing element in your html, and the
-contents of the <code>el</code> are not modified during a call to <code>render</code>, then you can make the call to
-the model binding code in the initializer or anywhere else.</p>
+<p>
+If, however, your view has an <code>el</code> that represents an <em>existing</em> element in DOM, and the
+contents of the <code>el</code> are not modified during a call to <code>render</code>, then you can make 
+the call to the model binding code in the initializer or anywhere else.
+</p>
 
-<pre><code>&lt;form id="some-form"&gt;
-  Name: &lt;input id="name"&gt;
-&lt;/form&gt;
-</code></pre>
-
-<pre><code>FormView = Backbone.View.extend({
-  el: "#some-form",
-
-  initialize: function(){
-    Backbone.ModelBinding.bind(this);
-  }
+<pre class="prettyprint prettyprinted language-html linenums">&lt;body&gt;
+	&lt;-- below's div will be reflected by view's el attribute --&gt;
+	&lt;div id=&quot;my-view&quot;&gt;Name:
+		&lt;input id='name' /&gt;
+	&lt;/div&gt;
+&lt;/body&gt;
+</pre>
+<pre class="prettyprint prettyprinted language-js linenums">var SomeView = Backbone.View.extend({
+	el: "#my-view",
+	initialize: function() {
+		Backbone.ModelBinding.bind(this);
+	}
 });
-</code></pre>
+</pre>
+
 
 <h4>Binding From Outside A View</h4>
 
-<p>There is no requirement for the model binding code to be called from within a view directly.
-You can bind the view from external code, like this:</p>
+<p>
+There is no requirement for the model binding code to be called from within a view directly.
+You can bind the view from external code, like this:
+</p>
 
-<pre><code>FormView = Backbone.View.extend({
-  el: "#some-form",
+<pre class="prettyprint prettyprinted language-js linenums">var SomeView = Backbone.View.extend({
+	el: "#my-view"
 });
-
-formView = new FormView();
-Backbone.ModelBinding.bind(formView);
-</code></pre>
+var view = new SomeView();
+Backbone.ModelBinding.bind(view);
+</pre>
 
 <h3>Model Unbinding</h3>
 
-<p>When your view has completed its work and is ready to be removed from the DOM, you not only
+<p>
+When your view has completed its work and is ready to be removed from the DOM, you not only
 need to unbind your view's events (handled through the view's <code>remove</code> method, typically), you
-also need to unbind the model events that are bound in the view. </p>
+also need to unbind the model events that are bound in the view. 
+</p>
 
-<p>Backbone.ModelBinding can unbind its own events through a simple call to 
+<p>
+Backbone.ModelBinding can unbind its own events through a simple call to 
 <code>Backbone.ModelBinding.unbind(view)</code>. If you do not call this method when your view is being
 closed / removed / cleaned up, then you may end up with memory leaks and zombie views that
-are still responding to model change events.</p>
+are still responding to model change events.
+</p>
 
-<pre><code>FormView = Backbone.View.extend({
-  el: "#some-form",
-
-  initialize: function(){
-    Backbone.ModelBinding.bind(this);
-  },
-
-  close: function(){
-    this.remove();
-    this.unbind();
-    Backbone.ModelBinding.unbind(this);
-  }
+<pre class="prettyprint prettyprinted language-js linenums">var SomeView = Backbone.View.extend({
+	el: "#my-view",
+	initialize: function() {
+		Backbone.ModelBinding.bind(this);
+	},
+	close: function() {
+		this.remove();
+		this.unbind();
+		Backbone.ModelBinding.unbind(this);
+	}
 });
-</code></pre>
+</pre>
 
-<h2>Convention Bindings</h2>
+<h2>Default Binding</h2>
 
-<p>Automatic bi-directional binding between your form input and your model. </p>
+<p>Default, automatic bi-directional binding between model and view's input elements (all form elements).</p>
 
-<p>The convention-based binding requires no additional configuration or code in your
-view, other than calling the <code>Backbone.ModelBinding.bind(this);</code> as noted above.
+<p>
+The convention-based binding requires no additional configuration or code in your
+view, other than calling the <code>Backbone.ModelBinding.bind(this)</code> as noted above.
 With the conventions binding, your <code>&lt;input&gt;</code> fields will be bound to the views model
-by the id of the input. </p>
+by the id of the input. By default element ID will be used to match model's attribute, however it is worth to mention
+that this behaviour can be changed by modyfying <code>Backbone.ModelBinding.Configuration</code> settings. For more
+details please refer to the examples chapter. 
+</p>
 
-<p>For example:</p>
+<p>Usage:</p>
 
-<pre><code>// something.html
+<pre class="prettyprint prettyprinted language-html linenums">&lt;body&gt;
+	&lt;input id='name'&gt;
+&lt;/body&gt;
+</pre>
 
-&lt;input id='name'&gt;
-
-// something.js
-
-SomeModel = Backbone.Model.extend();
-
-SomeView = Backbone.View.extend({
-  render: function(){
-    // ... render your form here
-
-    // execute the defined bindings
-    Backbone.ModelBinding.bind(this);
-  }
+<pre class="prettyprint prettyprinted language-js linenums">
+var SomeModel = Backbone.Model.extend({ });
+var SomeView = Backbone.View.extend({
+	el : 'body',
+	defaults : {
+		name : 'some name'
+	},
+	initialize : function() {
+		Backbone.ModelBinding.bind(this);
+	}
 });
 
-model = new SomeModel();
-view = new SomeView({model: model});
+var model = new SomeModel();
+var view = new SomeView({ model : model });
 
-model.set({name: "some name"});
+model.set({ name: "some other name" });
+</pre>
 
-</code></pre>
+<p>
+In above example, when <code>model.set(..)</code> is called to set the name, <em>"some other name"</em> string 
+will appear in the <code>#name</code> input field. Similarly, when the <code>#name</code> input field is changed, 
+the value entered into that field will be sent to the model's <code>name</code> attribute.</p>
 
-<p>In this example, when <code>model.set</code> is called to set the name, "some name" will appear
-in the <code>#name</code> input field. Similarly, when the <code>#name</code> input field is changed, the
-value entered into that field will be sent to the model's <code>name</code> property.</p>
+<h2>Data-Bind Binding</h2>
 
-<h2>Data-Bind Attributes</h2>
-
-<p>Backbone.ModelBinding supports Knockout-style data-bind attributes on any arbitrary
-HTML element. These bindings will populate any attribute, the text, or HTML contents
+<p>Backbone.ModelBinding supports Knockout-style <code>data-bind</code> attributes to be set on any arbitrary
+HTML element. This binding will populate any attribute - text, HTML content ora any DOM attribute
 of an HTML element based on your configurations. This is particularly useful when a
 model that is being edited is also being displayed elsewhere on the screen.</p>
 
 <p>To bind an element to a model's properties, add a <code>data-bind</code> attribute to the element
 and specify what should be updated with which model property using an <code>elementAttr modelAttr</code>
-format. For example <code>&lt;span data-bind="text name"&gt;</code> will update the span's text with
-the model's name property, when the model's name changes.</p>
+format. For example <code>data-bind="text name"</code> will update text node of any DOM element with the
+model's name property, when the model's name changes.</p>
 
-<pre><code>&lt;form&gt;
-  &lt;input type="text" id="name"&gt;
-&lt;/form&gt;
-Name: &lt;span data-bind="text name"&gt;
+<pre class="prettyprint prettyprinted language-html linenums">&lt;body&gt;
+	&lt;form&gt;
+		&lt;input type="text" id="name"&gt;
+	&lt;/form&gt;
+	Name: &lt;span data-bind="text name"&gt;
+&lt;body&gt;
+</pre>
 
-SomeView = Backbone.View.extend({
-  // ... 
-
-  render: function(){
-    // ... 
-    Backbone.ModelBinding.bind(this);
-  }
+<pre class="prettyprint prettyprinted language-js linenums">
+var SomeModel = Backbone.Model.extend({ });
+var SomeView = Backbone.View.extend({
+	el : 'body',
+	initialize : function() {
+		Backbone.ModelBinding.bind(this);
+	}
 });
-
-someModel = new SomeModel();
-someView = new SomeView({model: someModel});
-</code></pre>
+var model = new SomeModel();
+var view = new SomeView({ model: model });
+</pre>
 
 <p>In this example, the model's <code>name</code> will be updated when you type into the text box
 and then tab or click away from it (to fire the change event). When the model's <code>name</code>
@@ -337,111 +341,150 @@ the text of the <code>span</code> to the model's name.</p>
 <p>Multiple attributes can be specified for a single element's <code>data-bind</code> by separating
 each with a <code>;</code> (semi-colon). For example:</p>
 
-<pre><code>&lt;form&gt;
-  &lt;input type="text" id="name"&gt;
-&lt;/form&gt;
-Name: &lt;span data-bind="text name; class name"&gt;
+<pre class="prettyprint prettyprinted language-html linenums">&lt;body&gt;
+	&lt;form&gt;
+		&lt;input type="text" id="name"&gt;
+		&lt;input type="text" id="something"&gt;
+	&lt;/form&gt;
+	Name: &lt;span data-bind="text name; class something"&gt;
+&lt;body&gt;
+</pre>
 
-SomeView = Backbone.View.extend({
-  // ... 
-
-  render: function(){
-    // ... 
-    Backbone.ModelBinding.bind(this);
-  }
+<pre class="prettyprint prettyprinted language-js linenums">
+var SomeModel = Backbone.Model.extend({
+	defaults : {
+		something : 'active-class'
+	} 
 });
-
-someModel = new SomeModel();
-someView = new SomeView({model: someModel});
-</code></pre>
+var SomeView = Backbone.View.extend({
+	el : 'body',
+	initialize : function() {
+		Backbone.ModelBinding.bind(this);
+	}
+});
+var model = new SomeModel();
+var view = new SomeView({ model: model });
+</pre>
 
 <p>In this example, both the text and the css class will be updated when you change
 the name input. You can data-bind as many attributes as you need, in this manner.</p>
 
 <h3>Configurating the data-bind selector</h3>
 
-<p>By default, the data-bind capabilities looks for a <code>data-bind</code> attribute on the
-HTML elements being bound. This is configurable, though:</p>
+<p>
+By default, the data-bind capabilities looks for a <code>data-bind</code> attribute on the
+HTML elements being bound. This is configurable, though:
+</p>
 
-<pre><code>Backbone.ModelBinding.Conventions.databind.selector = "[my-binder]";
-</code></pre>
+<pre class="prettyprint prettyprinted language-js linenums">
+Backbone.ModelBinding.Conventions.databind.selector = "[my-binder]";
+</pre>
 
 <p>This example will look for elements with an attribute of <code>my-binder</code> instead of
-<code>data-bind</code>.</p>
+<code>data-bind</code>, so with such configuration your HTML code should look like:</p>
 
-<pre><code>&lt;div my-binder="text someAttr"&gt;&lt;/div&gt;
-</code></pre>
+<pre class="prettyprint prettyprinted language-html linenums">
+&lt;div my-binder="text someAttr"&gt;&lt;/div&gt;
+</pre>
 
 <h3>Special Cases For data-bind</h3>
 
-<p>There are several special cases for the data-bind attribute. These allow a little more
-functionality than just setting an attribute on an element. </p>
+<p>
+There are several special cases for the data-bind attribute. These allow a little more
+functionality than just setting an attribute on an element. 
+</p>
 
 <ul>
-<li>(default) - if you only specify the model property, defaults to the text of the html element</li>
-<li>text - replace the text contents of the element</li>
-<li>html - replace the html contents of the element</li>
-<li>enabled - enable or disable the html element</li>
-</ul><h4>(default)</h4>
+<li><b>(default)</b> - if you only specify the model property, (default) set it to the text of the html element</li>
+<li><b>text</b> - replace the text contents of the element</li>
+<li><b>html</b> - replace the html contents of the element</li>
+<li><b>enabled</b> - enable or disable the html element</li>
+<li><b>disabled</b> - disable or enable the html element</li>
+<li><b>displayed</b> - show element by setting its CSS <code>display</code> property to <code>block</code></li>
+<li><b>hidden</b> - hide element by setting its CSS <code>display</code> property to <code>none</code></li>
+</ul>
+
+<h4>(default)</h4>
 
 <p>If you only specify the model's property in the data-bind attribute, then the data-bind
 will bind the value of that model property to the <code>text</code> of the html element.</p>
 
-<pre><code>&lt;div data-bind="name"/&gt;
-</code></pre>
+<pre class="prettyprint prettyprinted language-html linenums">
+&lt;div data-bind="name"/&gt;
+</pre>
 
-<p>See the document for data-bind text, below.</p>
 
 <h4>text</h4>
 
 <p>If you set the data-bind attribute to use <code>text</code>, it will replace the text contents of the
 html element instead of just setting an element attribute.</p>
 
-<pre><code>&lt;div id="someDiv" data-bind="text someProperty"&gt;&lt;/div&gt;
+<pre class="prettyprint prettyprinted language-html linenums">
+&lt;div data-bind="text property"&gt;&lt;/div&gt;
+</pre>
 
+<pre class="prettyprint prettyprinted language-js linenums">
+model.set({ property : "some value" });
+</pre>
 
-someModel.set({someProperty: "some value"});
-</code></pre>
 
 <h4>html</h4>
 
 <p>If you set the data-bind attribute to use <code>html</code>, it will replace the entire
 inner html of the html element, instead of just setting an element attribute.</p>
 
-<pre><code>&lt;div id="someDiv" data-bind="html someProperty"&gt;&lt;/div&gt;
+<pre class="prettyprint prettyprinted language-html linenums">
+&lt;div data-bind="html property"&gt;&lt;/div&gt;
+</pre>
 
+<pre class="prettyprint prettyprinted language-js linenums">
+model.set({ property: "&lt;b&gt;some&lt;b&gt; value" });
+</pre>
 
-someModel.set({someProperty: "some value"});
-</code></pre>
 
 <h4>enabled</h4>
 
-<p>This special case breaks the html element standard of using a <code>disabled</code> attribute, specifically
+<p>
+This special case breaks the html element standard of using a <code>disabled</code> attribute, specifically
 to inverse the logic used for enabling / disabling an element, to keep the data-bind attribute
-clean and easy to read.</p>
+clean and easy to read.
+</p>
 
-<p>If you have a model with a property that indicates a negative state, such as <code>invalid</code>, then you
-can use a data-bind attribute of <code>disabled</code>:</p>
+<p>
+If you have a model with a property that indicates a state, such as <code>valid</code>, then you
+can use a data-bind attribute of <code>enabled</code>:
+</p>
 
-<pre><code>&lt;button id="someButton" data-bind="disabled invalid"&gt;&lt;/div&gt;
+<pre class="prettyprint prettyprinted language-html linenums">
+&lt;button id="someButton" data-bind="enabled valid"&gt;&lt;/button&gt;
+</pre>
+
+<pre class="prettyprint prettyprinted language-js linenums">
+// will cause button to be disabled
+model.set({ valid : false });
+// will cause button to be enabled
+model.set({ valid : true });
+</pre>
 
 
-someModel.set({invalid: true});
-</code></pre>
+<h4>disabled</h4>
 
-<p>However, some developers prefer to use positive state, such as <code>isValid</code>. In this case, setting
-the disabled attribute to the model's isValid property would result in the button being disabled
-when the model is valid and enabled when the model is not valid. To correct this, a special case
-has been added to enable and disable an element with <code>enabled</code>.</p>
+<p>It works in the same way as <code>enabled</code> and it's inversion of it.</p>
 
-<pre><code>&lt;button id="someButton" data-bind="enabled isValid"&gt;&lt;/div&gt;
+<pre class="prettyprint prettyprinted language-html linenums">
+&lt;button id="someButton" data-bind="disabled invalid"&gt;&lt;/button&gt;
+</pre>
 
-
-someModel.set({isValid: false});
-</code></pre>
+<pre class="prettyprint prettyprinted language-js linenums">
+// will cause button to be enabled
+model.set({ invalid : false });
+// will cause button to be disabled
+model.set({ invalid : true });
+</pre>
 
 <p>This will disable the button when the model is invalid and enable the button when the model is
 valid.</p>
+
 
 <h4>displayed</h4>
 
@@ -774,6 +817,58 @@ When above example would be:</p>
 &lt;/script&gt;
 </code></pre>
 
+
+
+
+
+
+
+<h2>Building On Local PC</h2>
+
+<p>
+This section is applicable only to the ones who would like to be involved in Backbone.Modelbinding
+plugin development. If you do not want to change Backbone.Modelbinding source you can skip this section.
+</p>
+
+<h3>Prerequisites:</h3>
+
+<ul>
+<li>JDK 1.6 or above installed</li>
+<li>JAVA_HOME variable points to your JDK installation directory</li>
+<li>Maven installed and its <code>bin</code> directory available in PATH variable. For details of how 
+to install and configure Maven please visit <a href="http://tech.lds.org/wiki/Download,_install,_and_configure_Maven">this site</a> 
+or try to <a href="https://www.google.com/search?q=maven+setup&ie=utf-8&oe=utf-8&aq=t&rls=org.mozilla:en-US:official&client=firefox-a#hl=en&gs_nf=1&tok=pGwyGMAJmEfFU9a_akIj4g&pq=maven%20download%20and%20setup&cp=28&gs_id=1y6&xhr=t&q=maven+download,+installation+and+setup&pf=p&client=firefox-a&hs=B1U&rls=org.mozilla:en-US%3Aofficial&sclient=psy-ab&oq=maven+download,+installation+and+setup&aq=f&aqi=&aql=&gs_l=&pbx=1&bav=on.2,or.r_gc.r_pw.r_cp.r_qf.,cf.osb&fp=61fe8c406b329c8c&biw=1366&bih=563">google</a> some information</li>
+</ul>
+
+<p>Clone repo to your file system:</p>
+
+<pre><code>$ git clone git://github.com/oaprnd/backbone.modelbinding.git</code></pre>
+
+<p>Build it with the Maven:</p>
+
+<pre><code>$ cd backbone.modelbinding
+$ mvn clean install</code></pre>
+
+<p>To test agains Jamisne specs:</p>
+
+<pre><code>$ mvn clean test</code></pre>
+
+<p>
+Please note that <code>backbone.modelbinding.js</code> and <code>backbone.modelbinding.min.js</code> in the root directory are
+<em>generated while the build</em>, so if you want to edit source file you should change this one:
+</p>
+
+<pre><code>src
+ \_ main
+    \_ javascript
+       \_ backbone.modelbinding.js
+</code></pre>
+
+
+
+
+
+
 <h2>Release Notes</h2>
 
 <h3>v0.5.1</h3>
@@ -782,6 +877,8 @@ When above example would be:</p>
 <li>Switch project build from Rake to Maven</li>
 <li>Always use newest jQuery, Underscore.js and Backbone.js</li>
 <li>Significant checkstyle fixes</li>
+<li>Add support for <code>data-skip</code> attribute</li>
+<li>Add <code>disabled</code> data binding option</li>
 </ul>
 
 <h3>v0.5.0</h3>
@@ -925,7 +1022,7 @@ v1.6.2)</li>
 <li>Significant internal code cleanup and restructuring</li>
 </ul>
 
-<h1>License</h1>
+<h2>License</h2>
 
 <p>Copyright (c) 2011 Derick Bailey, Muted Solutions, LLC</p>
 
@@ -952,6 +1049,8 @@ THE SOFTWARE.</p>
       </footer>
     </div>
     <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
-    
+    <script type="text/javascript">
+    prettyPrint();
+    </script>
   </body>
 </html>
