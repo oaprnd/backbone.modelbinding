@@ -1,0 +1,111 @@
+<html>
+<head>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script type="text/javascript" src="https://raw.github.com/documentcloud/underscore/master/underscore-min.js"></script>	
+<script type="text/javascript" src="https://raw.github.com/documentcloud/backbone/master/backbone-min.js"></script>	
+<script type="text/javascript" src="https://raw.github.com/oaprnd/backbone.modelbinding/master/backbone.modelbinding.min.js"></script>
+<!-- tools -->
+<link rel="stylesheet" href="css/quickjsonformatter.css" />
+<script type="text/javascript" src="js/quickjsonformatter.js"></script>
+<link type="text/css" rel="stylesheet" href="google-code-prettify/sons-of-obsidian.css" />
+<script type="text/javascript" src="google-code-prettify/prettify.js"></script> 
+</head>
+<body>
+
+<h2>Brief Description:</h2>
+This example show how to data-bind hidden fields. Please note that when you update hidden field
+thru jQuery's <em>val(..)</em> function, you should trigger change event after you call it:
+
+<pre class='prettyprint lang-js linenums prettyprinted'>
+$('#something').val('new value').trigger('change');
+</pre>
+
+<h2>Demo:</h2>
+
+
+
+
+
+
+
+
+
+
+
+<!-- HTML elements that are part of view -->
+
+<div id="html-snippet">
+<div id='my-view'>
+	<form autocomplete="off">
+		<input type='hidden' id='something' />
+		<input type='button' id='changer' value="change me" />
+	</form>
+	<div>Hidden field value: <span data-bind='something'></span></div>
+</div>
+</div>
+
+<!-- JavaScript ninja magic, to run it in page scope change type to "text/javascript -->
+
+<script type="text/javascript-demo" id="js-snippet">
+
+$('#changer').click(function() {
+	$('#something').val("new time is " + (new Date().getTime())).trigger('change');
+});
+
+var MyModel = Backbone.Model.extend({
+
+	defaults : {
+		something : "1336832542737"
+	}
+
+});
+
+var MyView = Backbone.View.extend({ 
+
+	el : '#my-view',
+
+	initialize: function(){
+		Backbone.ModelBinding.bind(this);
+	}
+
+});
+var model = new MyModel();
+var view = new MyView({ model : model });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- additional stuff, just for make this page working well - format JSON, display HTML, etc -->
+
+<h2>Model Data:</h2>
+<div id='json'></div>
+<h2>HTML:</h2>
+<div><pre id='html-code' class='prettyprint lang-html linenums prettyprinted'></pre></div>
+<h2>JavaScript:</h2>
+<div><pre id='js-code' class='prettyprint lang-js linenums prettyprinted'></pre></div>
+<script type="text/javascript" src="js/stuff.js"></script>
+<script type="text/javascript">
+renderJSON(model);
+model.on('change', renderJSON);
+</script>
+
+<br><br><br>
+
+</body>
+</html>
