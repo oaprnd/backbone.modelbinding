@@ -1,4 +1,6 @@
-/**
+/* global Backbone, _, $ */
+
+/*!
  * Backbone.Modelbinding v0.5.1
  *
  * This plugin provides a simple, convention based mechanism to create bi-directional binding between your Backbone models and your HTML elements, including form inputs, divs, spans, and so on.
@@ -14,7 +16,23 @@
  * ----------------------------
  */
 
-(function (root) {
+(function (root, Backbone, _, $) {
+
+	var ModelBinding = {
+
+		version: "0.5.1",
+
+		bind: function (view, options) {
+			view.modelBinder = new ModelBinder(view, options);
+			view.modelBinder.bind();
+		},
+
+		unbind: function (view) {
+			if (view.modelBinder) {
+				view.modelBinder.unbind();
+			}
+		}
+	};
 
 	var modelbinding = (function (Backbone, _, $) {
 
@@ -35,65 +53,66 @@
 		};
 
 		var ModelBinder = function (view, options) {
-				this.config = new modelBinding.Configuration(options);
-				this.modelBindings = [];
-				this.elementBindings = [];
 
-				this.bind = function () {
-					var conventions = modelBinding.Conventions;
-					for (var conventionName in conventions) {
-						if (conventions.hasOwnProperty(conventionName)) {
-							var conventionElement = conventions[conventionName];
-							var handler = conventionElement.handler;
-							var conventionSelector = conventionElement.selector;
-							handler.bind.call(this, conventionSelector, view, view.model, this.config);
-						}
+			this.config = new modelBinding.Configuration(options);
+			this.modelBindings = [];
+			this.elementBindings = [];
+
+			this.bind = function () {
+				var conventions = modelBinding.Conventions;
+				for (var conventionName in conventions) {
+					if (conventions.hasOwnProperty(conventionName)) {
+						var convention = conventions[conventionName];
+						var handler = convention.handler;
+						var selector = convention.selector;
+						handler.bind.call(this, selector, view, view.model, this.config);
 					}
-				};
-
-				this.unbind = function () {
-					// unbind the html element bindings
-					_.each(this.elementBindings, function (binding) {
-						binding.element.unbind(binding.eventName, binding.callback);
-					});
-
-					// unbind the model bindings
-					_.each(this.modelBindings, function (binding) {
-						binding.model.unbind(binding.eventName, binding.callback);
-					});
-				};
-
-				this.registerModelBinding = function (model, attrName, callback) {
-					// bind the model changes to the form elements
-					var eventName = "change:" + attrName;
-					model.bind(eventName, callback);
-					this.modelBindings.push({
-						model: model,
-						eventName: eventName,
-						callback: callback
-					});
-				};
-
-				this.registerDataBinding = function (model, eventName, callback) {
-					// bind the model changes to the elements
-					model.bind(eventName, callback);
-					this.modelBindings.push({
-						model: model,
-						eventName: eventName,
-						callback: callback
-					});
-				};
-
-				this.registerElementBinding = function (element, callback) {
-					// bind the form changes to the model
-					element.bind("change", callback);
-					this.elementBindings.push({
-						element: element,
-						eventName: "change",
-						callback: callback
-					});
-				};
+				}
 			};
+
+			this.unbind = function () {
+				// unbind the html element bindings
+				_.each(this.elementBindings, function (binding) {
+					binding.element.unbind(binding.eventName, binding.callback);
+				});
+
+				// unbind the model bindings
+				_.each(this.modelBindings, function (binding) {
+					binding.model.unbind(binding.eventName, binding.callback);
+				});
+			};
+
+			this.registerModelBinding = function (model, attrName, callback) {
+				// bind the model changes to the form elements
+				var eventName = "change:" + attrName;
+				model.bind(eventName, callback);
+				this.modelBindings.push({
+					model: model,
+					eventName: eventName,
+					callback: callback
+				});
+			};
+
+			this.registerDataBinding = function (model, eventName, callback) {
+				// bind the model changes to the elements
+				model.bind(eventName, callback);
+				this.modelBindings.push({
+					model: model,
+					eventName: eventName,
+					callback: callback
+				});
+			};
+
+			this.registerElementBinding = function (element, callback) {
+				// bind the form changes to the model
+				element.bind("change", callback);
+				this.elementBindings.push({
+					element: element,
+					eventName: "change",
+					callback: callback
+				});
+			};
+		};
 
 		// ----------------------------
 		// Model Binding Configuration
@@ -734,11 +753,12 @@
 	});
 
 	// Backbone.Modelbinding AMD wrapper with namespace fallback
-	if (typeof define === 'function' && define.amd) {
+	if (typeof(define) === 'function' && define.amd) {
 		// AMD support
-		define(['backbone', // use Backbone 0.5.3-optamd3 branch (https://github.com/jrburke/backbone/tree/optamd3)
-		'underscore', // AMD supported
-		'jquery' // AMD supported
+		define([
+			'backbone', // use Backbone 0.5.3-optamd3 branch (https://github.com/jrburke/backbone/tree/optamd3)
+			'underscore', // AMD supported
+			'jquery' // AMD supported
 		], function (Backbone, _, jQuery) {
 			return modelbinding(Backbone, _, jQuery);
 		});
@@ -748,4 +768,4 @@
 		root.Backbone.ModelBinding = modelbinding(Backbone, _, jQuery);
 	}
 
-})(this);
+})(this, Backbone, _, jQuery);
