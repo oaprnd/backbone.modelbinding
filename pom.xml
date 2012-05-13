@@ -71,6 +71,7 @@
 					</execution>
 				</executions>
 				<configuration>
+					<jsSrcDir>target/classes</jsSrcDir>
 					<preloadSources>
 						<source>http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js</source>
 						<source>https://raw.github.com/documentcloud/underscore/master/underscore.js</source>
@@ -103,6 +104,7 @@
 						<include>*.js</include>
 					</includes>
 					<failOnWarning>false</failOnWarning>
+					<preserveAllSemiColons>true</preserveAllSemiColons>
 				</configuration>
 			</plugin>
 			<plugin>
