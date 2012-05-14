@@ -1027,3 +1027,30 @@ footer {
     width: auto;
   }
 }
+
+#commits > ul {
+	margin-left: -40px;
+	line-height: 1em;
+}
+
+#commits .gh_commit a {
+	margin-top: 0;
+	line-height: 1em;
+}
+
+#commits .gh_commit .push h4,
+#commits .gh_commit .push h5 {
+	margin: 0;
+	padding: 0;
+	line-height: 1em;
+}
+
+#commits .gh_commit pre {
+	display: block;
+	margin-top: 10px;
+	margin-bottom: 0;
+	padding: 2px;
+	background-color: #FFC;
+	width: auto;
+	padding-left: 5px;
+}
