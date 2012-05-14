@@ -759,13 +759,13 @@
 			'backbone', // use Backbone 0.5.3-optamd3 branch (https://github.com/jrburke/backbone/tree/optamd3)
 			'underscore', // AMD supported
 			'jquery' // AMD supported
-		], function (Backbone, _, jQuery) {
-			return modelbinding(Backbone, _, jQuery);
+		], function (Backbone, _, $) {
+			return modelbinding(Backbone, _, $);
 		});
 	} else {
 		// No AMD, use Backbone namespace
 		root.Backbone = Backbone || { };
-		root.Backbone.ModelBinding = modelbinding(Backbone, _, jQuery);
+		root.Backbone.ModelBinding = modelbinding(Backbone, _, $);
 	}
 
 })(this, Backbone, _, jQuery);
