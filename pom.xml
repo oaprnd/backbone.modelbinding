@@ -12,7 +12,7 @@
 	<version>0.5.1</version>
 	<packaging>pom</packaging>
 
-	<name>Backbone.Modelbinding</name>
+	<name>Backbone.ModelBinding</name>
 	<description>This plugin provides a simple, convention based mechanism to create bi-directional binding between your Backbone models and your HTML elements, including form inputs, divs, spans, and so on.</description>
 	<url>${site.url}</url>
 
