@@ -10,10 +10,6 @@
  *
  * Distributed Under MIT License:
  * ${license.url}
- *
- * ----------------------------
- * Backbone.ModelBinding
- * ----------------------------
  */
 
 (function (root, Backbone, _, $) {
@@ -462,7 +458,7 @@
 					var element_name = config.getBindingValue(element, 'checkbox');
 
 					// Does this attribute refer to an array? ('foo[]' => true, 'bar' => false)
-					var arrayAttr = element_name.substr(-2) === '[]';
+					var arrayAttr = element_name.substr(element_name.length - 2) === '[]';
 
 					// The name of the attribute on the model (ie 'foo')
 					var attribute_name = arrayAttr ? element_name.slice(0, -2) : element_name;
@@ -471,7 +467,7 @@
 					var modelChange = function (model, val) {
 						var test = false;
 						if (arrayAttr && val) {
-							test = val.indexOf(element.val()) > -1;
+							test = $.inArray(element.val(), val) > -1;
 						} else {
 							test = val;
 						}
@@ -585,7 +581,11 @@
 					break;
 				default:
 					if (element[0].type != "checkbox" && element[0].type != "radio") {
-						element.attr(attr, val);
+						if (typeof(val) !== 'undefined') {
+							element.attr(attr, val);
+						} else {
+							element.removeAttr(attr);
+						}
 					}
 				}
 			};
